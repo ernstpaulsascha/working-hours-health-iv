@@ -1,0 +1,149 @@
+% =========================================================
+% SOEP-Variablen Liste
+% =========================================================
+
+\section{Liste der verwendeten SOEP-Variablen}
+Tabelle A1 dokumentiert alle in der Analyse verwendeten SOEP-Variablen. Neben der in der Arbeit verwendeten Bezeichnung sind die offiziellen Variablennamen des SOEP sowie der jeweilige Datensatz angegeben, um eine eindeutige Zuordnung und Replikation der Analyse zu ermöglichen.
+
+\begin{table}[h!]
+\centering
+\caption{SOEP-Variablen mit Beschreibung und Modul}
+\begin{tabular}{lll}
+\toprule
+\textbf{Beschreibung in der Arbeit} & \textbf{SOEP-Variablenname(n)} & \textbf{Datensatz} \\
+\midrule
+Gesundheitszustand & \texttt{ple0008} & \texttt{pl} \\
+Lebenszufriedenheit & \texttt{plh0182} & \texttt{pl} \\
+Zufriedenheit mit Freizeit & \texttt{plh0178} & \texttt{pl} \\
+Interesse für Politik & \texttt{plh0007} & \texttt{pl} \\
+Körpergewicht & \texttt{ple0006} & \texttt{pl} \\
+Körpergröße & \texttt{ple0007} & \texttt{pl} \\
+\midrule
+Tatsächliche Wochenarbeitszeit & \texttt{pgtatzeit} & \texttt{pgen} \\
+Familienstand & \texttt{pgfamstd} & \texttt{pgen} \\
+Jahre Berufserfahrung & \texttt{pgexpft}, \texttt{pgexppt} & \texttt{pgen} \\
+Branche & \texttt{pgnace}, \texttt{pgnace2} & \texttt{pgen} \\
+Bruttomonatslohn & \texttt{pglabgro} & \texttt{pgen} \\
+Jahre Bildung & \texttt{pgbilzeit} & \texttt{pgen} \\
+Erwerbsstatus & \texttt{pgemplst} & \texttt{pgen} \\
+\midrule
+Geschlecht & \texttt{d11102ll} & \texttt{pequiv} \\
+Alter & \texttt{d11101} & \texttt{pequiv} \\
+Anzahl der Kinder im Haushalt & \texttt{d11107}  & \texttt{pequiv} \\
+\midrule
+Bundesland& \texttt{bula\_h} & \texttt{hbrutto} \\
+\midrule
+Panelgewicht & \texttt{phrf1} & \texttt{ppathl} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% =========================================================
+% Histogramme der Variablen
+% =========================================================
+
+\section{Histogramme zentraler Variablen}
+Die folgenden Abbildungen zeigen die Verteilungen der für die Analyse zentralen Variablen: Bartik-Instrument, Wochenarbeitszeit, Gesundheitszustand, Lebenszufriedenheit und Freizeitzufriedenheit. Da diese Verteilungen im Fließtext bereits beschrieben wurden, dienen die Abbildungen hier vor allem der Vollständigkeit und Transparenz.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.49\textwidth]{figures/figureA1/histogram_bartik_iv.png}
+    \includegraphics[width=0.49\textwidth]{figures/figureA1/histogram_tatzeit.png}
+
+    \includegraphics[width=0.49\textwidth]{figures/figureA1/histogram_health.png}
+    \includegraphics[width=0.49\textwidth]{figures/figureA1/histogram_lifesat.png}
+
+    \includegraphics[width=0.49\textwidth]{figures/figureA1/histogram_leissat.png}
+    
+    \caption{Histogramme der Variablen: Bartik-Instrument, Wochenarbeitszeit, Gesundheitszustand, Lebenszufriedenheit und Freizeitzufriedenheit. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022)}
+    \label{fig:anhangB_verteilungen}
+\end{figure}
+
+
+% =========================================================
+% Verteilungen Bundesland & Branche
+% =========================================================
+
+\section{Regionale und sektorale Zusammensetzung der Stichprobe}
+Die Konstruktion des Instruments basiert auf regionalen und sektoralen Unterschieden in der Beschäftigungsstruktur. Daher ist es sinnvoll, die Verteilung der Stichprobe nach Bundesland und nach Branchen gemäß der Klassifikation der Wirtschaftszweige (WZ 2008, NACE Rev. 2, Abschnitte A--U) darzustellen. Beide Dimensionen sind zentrale Bestandteile der Instrumentenbildung, da die Anteile der Erwerbstätigen pro Bundesland und Branche als Gewichte in die Shift-Share-Berechnung eingehen. 
+
+Tabelle A2 zeigt die gewichtete Verteilung der Beobachtungen auf die 16 Bundesländer. Wie erkennbar, entfällt der größte Anteil auf die bevölkerungsreichen Länder Nordrhein-Westfalen, Bayern und Baden-Württemberg. Die Besonderheit ist, dass das Saarland im SOEP mit Rheinland-Pfalz zusammengefasst wird. Ein separater Code für Saarland im Analyse-Sample enthält keine Beobachtungen. 
+
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Anteile der Stichprobe nach Bundesland (gewichtet mit Panelgewichten)}
+\label{tab:anhangC_bula}
+\begin{tabular}{lc}
+\toprule
+\textbf{Bundesland} & \textbf{Anteil (\%)} \\
+\midrule
+Nordrhein-Westfalen & 22 \\
+Bayern & 15.6 \\
+Baden-Württemberg & 13.3 \\
+Niedersachsen & 9.3 \\
+Hessen & 7.7 \\
+Sachsen & 5.8 \\
+Rheinland-Pfalz / Saarland & 4.7 \\
+Berlin & 4 \\
+Schleswig-Holstein & 3.7 \\
+Brandenburg & 3.2 \\
+Thüringen & 2.9 \\
+Sachsen-Anhalt & 2.8 \\
+Mecklenburg-Vorpommern & 2.1 \\
+Hamburg & 2.1 \\
+Bremen & 0.8 \\\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Anteile berechnet mit Panelgewichten. 
+Prozentwerte gerundet; Abweichungen der Summe von 100 \% sind rundungsbedingt. 
+Im SOEP ist das Saarland mit Rheinland-Pfalz zusammengefasst. 
+Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+In Tabelle A3 sind die Anteile der Stichprobe über alle 
+21 Branchenabschnitte (A--U) dargestellt. Dabei zeigt sich die erwartbare Dominanz 
+des verarbeitenden Gewerbes sowie ein hoher Anteil an Dienstleistungen, 
+insbesondere den Bereichen freiberufliche, wissenschaftliche und technische 
+Dienstleistungen sowie Erziehung und Unterricht. 
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+\caption{Anteile der Stichprobe nach Branche (gewichtet mit Panelgewichten)}
+\label{tab:anhangC_branche}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X r}
+\toprule
+\textbf{Branche (NACE)} & \textbf{Anteil (\%)} \\
+\midrule
+Verarbeitendes Gewerbe & 23.2 \\
+Erbringung von freiberuflichen, wissenschaftlichen und technischen Dienstleistungen & 16 \\
+Erziehung und Unterricht & 11.3 \\
+Verkehr und Lagerei & 11.3 \\
+Handel; Instandhaltung und Reparatur von Kraftfahrzeugen & 7.6 \\
+Erbringung von sonstigen wirtschaftlichen Dienstleistungen & 6 \\
+Erbringung von Finanz- und Versicherungsdienstleistungen & 5.7 \\
+Information und Kommunikation & 4.2 \\
+Kunst, Unterhaltung und Erholung & 3.6 \\
+Gesundheits- und Sozialwesen & 2.8 \\
+Gastgewerbe & 2.3 \\
+Öffentliche Verwaltung, Verteidigung; Sozialversicherung & 1.7 \\
+Land- und Forstwirtschaft, Fischerei & 1.3 \\
+Baugewerbe & 1.1 \\
+Wasserversorgung; Abwasser- und Abfallentsorgung und Beseitigung von Umweltverschmutzungen & 0.8 \\
+Energieversorgung & 0.5 \\
+Erbringung von sonstigen Dienstleistungen & 0.5 \\
+Grundstücks- und Wohnungswesen & 0.2 \\
+Exterritoriale Organisationen und Körperschaften & 0.1 \\
+Bergbau und Gewinnung von Steinen und Erden & 0 \\
+Private Haushalte mit Hauspersonal; Herstellung von Waren und Erbringung von Dienstleistungen durch private Haushalte für den Eigenbedarf ohne ausgeprägten Schwerpunkt & 0 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Anteile berechnet mit Panelgewichten. Prozentwerte sind gerundet; Abweichungen der Gesamtsumme von 100\,\% sind rundungsbedingt. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

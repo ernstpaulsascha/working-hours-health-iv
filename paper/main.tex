@@ -1,0 +1,705 @@
+\documentclass[12pt,a4paper]{article}
+% =========================================================
+% Packages laden
+% =========================================================
+
+% Sprache, Kodierung und Fonts
+\usepackage[ngerman]{babel}
+\pretolerance=9000
+\tolerance=2000
+\emergencystretch=10pt
+\usepackage[utf8]{inputenc}               
+\usepackage[T1]{fontenc}                  
+\usepackage{lmodern}                      
+
+% Layout, Seitenränder, Absätze
+\usepackage[a4paper,margin=3cm]{geometry} 
+\usepackage{setspace}                     
+\onehalfspacing
+\setlength{\parindent}{1.5em}             
+\setlength{\parskip}{0em}                 
+\usepackage{ragged2e}                     
+\justifying
+
+% Literaturverwaltung
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  url=true,
+  doi=true,
+  isbn=false,
+  maxcitenames=2,
+  maxbibnames=99,
+  dashed=false,
+  date=short
+]{biblatex}
+\addbibresource{literatur.bib}
+\DefineBibliographyStrings{ngerman}{
+  andothers = {et\addabbrvspace al\adddot},
+  urlseen   = {abgerufen am}}
+\DefineBibliographyExtras{ngerman}{
+  \renewcommand*{\multinamedelim}{\addsemicolon\space} 
+  \renewcommand*{\finalnamedelim}{\addspace und\space}}
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareFieldFormat[online]{title}{#1}
+\DeclareFieldFormat{url}{Verfügbar unter:\space\url{#1}}
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{default}{family-given}
+\urlstyle{same}
+\addto\captionsngerman{\renewcommand{\abstractname}{Abstract}}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+\DeclareDelimAlias{nonameyeardelim}{nameyeardelim} 
+\renewcommand*{\postnotedelim}{\addcomma\space}    
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
+\AtBeginDocument{
+  \DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+  \DeclareDelimFormat{finalandothersdelim}{\addcomma\space}
+  \renewcommand*{\postnotedelim}{\addcomma\space}
+  \renewcommand*{\multicitedelim}{\addsemicolon\space}}
+
+% Tabellen und Layout
+\usepackage{booktabs}           
+\usepackage{threeparttable}     
+\usepackage{threeparttablex}    
+\usepackage{tabularx}           
+\usepackage{tabularray}         
+\UseTblrLibrary{booktabs}       
+\UseTblrLibrary{siunitx}        
+\usepackage{float}              
+\usepackage{pdflscape}          
+% Tabellen mit Hervorhebungen
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+
+% Grafiken und Abbildungen
+\usepackage{graphicx}           
+\usepackage{caption}            
+\captionsetup{font=small,labelfont=bf}
+
+% Mathe, Theoreme, Textmarkierung
+\usepackage{amsmath}            
+\usepackage{amsthm}             
+\usepackage{csquotes}           
+\usepackage[normalem]{ulem}     
+
+% Fußnoten
+\usepackage[hang,flushmargin]{footmisc} 
+\renewcommand{\footnotelayout}{\small}  
+
+
+% =========================================================
+% Dokumentanfang und Titelseite
+% =========================================================
+
+\begin{document}
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\Large\bfseries Weniger Arbeit für ein besseres Leben?\\[0.4cm]
+    \large Eine IV-Paneldatenanalyse zu den Effekten von Arbeitszeit auf Gesundheit und Wohlbefinden} \\[1cm]
+    \normalsize{Less Work, Better Life? An IV Panel Data Analysis on the Effects of Working Hours on Health and Well-being}\\[1.5cm]
+    {\large\bfseries Bachelorarbeit}\\[1.2cm]
+    Zur Erlangung des akademischen Grades \\
+    Bachelor of Science (B.Sc.) \\ [0.5cm]
+    in Volkswirtschaftslehre \\[0.5cm]
+    an der Wirtschaftswissenschaftlichen Fakultät \\ 
+    der Humboldt-Universität zu Berlin \\ [1.2cm]
+    vorgelegt von\\[0.2cm]
+    Paul Ernst\\[0.2cm]
+    Matrikelnummer: 629449\\[1cm]
+    Erstprüfer*in: Prof. Dr. Gabriel M. Ahlfeldt\\
+    Zweitprüfer*in: Prof. Dr.  Alexandra Spitz-Oener\\[1cm]
+    Berlin, 25.08.2025
+\pagenumbering{gobble}
+\end{titlepage}
+
+
+% =========================================================
+% Abstract
+% =========================================================
+
+\clearpage
+\begin{abstract}
+\noindent Diese Arbeit untersucht die kausalen Effekte der tatsächlich geleisteten Wochenarbeitszeit auf Gesundheit und Wohlbefinden von Erwerbstätigen in Deutschland. Grundlage ist das Sozio-oekonomische Panel (SOEP, 1994–2022), kombiniert mit einem Bartik-basierten Instrumentenvariablenansatz zur Adressierung der Endogenität der Arbeitszeit. Die Ergebnisse zeigen, dass längere Arbeitszeiten den selbst eingeschätzten Gesundheitszustand leicht verbessern. Für Lebenszufriedenheit und Freizeitzufriedenheit lassen sich keine signifikanten Effekte nachweisen. Subgruppenanalysen verdeutlichen, dass positive Effekte vor allem bei Männern, Vollzeitbeschäftigten und Besserverdienenden auftreten. Die Befunde widersprechen damit einem Großteil der bisherigen Literatur und deuten darauf hin, dass die Wirkung von Arbeitszeit stark vom sozioökonomischen Kontext abhängt.    
+\end{abstract}
+
+
+% =========================================================
+% Inhaltsverzeichnis
+% =========================================================
+
+\clearpage
+\tableofcontents
+
+
+% =========================================================
+% Einleitung
+% =========================================================
+
+\clearpage
+\pagenumbering{arabic} 
+\setcounter{page}{1}
+\section{Einleitung}
+\sloppy
+Die Gestaltung der Arbeitszeit gehört seit jeher zu den zentralen Fragen der Arbeitsmarkt- und Wirtschaftspolitik. In den vergangenen Jahren hat die Idee der Arbeitszeitverkürzung, insbesondere durch die Einführung einer Vier-Tage-Woche deutlich an Aufmerksamkeit gewonnen. Befürworter:innen versprechen sich davon neben Produktivitätssteigerungen auch Verbesserungen von Gesundheit und Wohlbefinden der Erwerbstätigen \parencite{dgbbayern2023}. Demgegenüber fordern Arbeitgeberverbände und Teile der Politik angesichts des demografischen Wandels und des Fachkräftemangels eine Ausweitung oder zumindest Flexibilisierung der Arbeitszeit, um Wettbewerbsfähigkeit und die Finanzierung sozialstaatlicher Systeme zu sichern \parencite{spiegel2023}. Die Bedeutung der Debatte zeigt sich sowohl angesichts gegenwärtiger arbeitsmarktpolitischer Herausforderungen als auch vor dem Hintergrund tiefgreifender Veränderungen in der Arbeitswelt.
+\par
+\fussy
+Vor diesem Hintergrund untersucht die vorliegende Arbeit, wie sich die tatsächliche Wochenarbeitszeit auf die Gesundheit und das subjektive Wohlbefinden von Erwerbstätigen in Deutschland auswirkt. Im Zentrum steht die Frage, ob eine Erhöhung der Arbeitszeit um eine Stunde nachweisbare Veränderungen in selbst eingeschätzter Gesundheit, Lebenszufriedenheit und Zufriedenheit mit der Freizeit bewirkt. Ziel ist es, nicht nur Korrelationen zu dokumentieren, sondern unter Anwendung einer kausalen Identifikationsstrategie belastbare Aussagen über die Wirkungsrichtung und Größenordnung der Effekte zu treffen. 
+
+Während in Ländern wie Island oder Großbritannien bereits groß angelegte Pilotprojekte zur Vier-Tage-Woche durchgeführt wurden \parencite{haraldsson2021,lewis2023}, fehlt es in Deutschland bislang an umfassenden evidenzbasierten Erkenntnissen, die aktuelle repräsentative Daten mit einem kausal identifizierenden Ansatz verbinden. Vorliegende Studien, beispielsweise von \textcite{cyganrehm2018}, nutzen gesetzliche Arbeitszeitreformen um zu zeigen, dass eine Reduktion der Wochenarbeitszeit gesundheitliche Beschwerden verringert. Allerdings beziehen sich diese Analysen auf spezifische Reformkontexte und Teilstichproben, sodass ihre Ergebnisse nur begrenzt übertragbar sind. Auch international belegen zahlreiche Studien, dass längere Arbeitszeiten mit einer Verschlechterung von Gesundheit und Wohlbefinden einhergehen \parencite{berniell2020,lepinteur2019}. Dennoch fehlt bislang eine Untersuchung, die für die gesamte deutsche Erwerbsbevölkerung den kausalen Effekt von Arbeitszeit auf Gesundheit und Wohlbefinden schätzt, ohne auf gesetzliche Reformen oder spezielle Teilgruppen zurückzugreifen. Außerdem bleibt offen, ob sich die Effekte entlang von Geschlecht, Erwerbsmodell oder sozioökonomischem Status unterscheiden.
+
+Diese Arbeit schließt diese Lücke, indem sie auf Basis des Sozio-oekonomischen Panels (SOEP) und einem Bartik-basierten Instrumentenvariablenansatz \parencite{angrist2009, bartik1991} die kausalen Effekte der tatsächlich geleisteten Arbeitszeit identifiziert. Es wird für den deutschen Kontext erstmals ein Shift-Share-Design eingesetzt, das exogene Variation aus branchenspezifischen Arbeitszeittrends erschließt und so eine kausale Identifikation jenseits von Reformkontexten ermöglicht. Im Unterschied zu früheren Studien werden zudem verschiedene Dimensionen des Wohlbefindens berücksichtigt und heterogene Wirkungen entlang von Geschlecht, Erwerbsmodell und sozioökonomischem Status analysiert. Die Validität des Ansatzes wird durch umfassende Robustheits- und Exogenitätstests überprüft. Insgesamt trägt die Arbeit zur bestehenden Literatur bei, indem sie den deutschen Kontext einbezieht und methodisch an neuere Entwicklungen anschließt.
+
+Die empirischen Ergebnisse deuten darauf hin, dass längere Arbeitszeiten den selbst eingeschätzten Gesundheitszustand leicht verbessern, während für das subjektive Wohlbefinden keine signifikanten Effekte erkennbar sind. Subgruppenanalysen legen nahe, dass sich die Wirkungen nach Geschlecht, Erwerbsmodell und sozioökonomischem Status unterscheiden.
+
+Der weitere Verlauf der Arbeit ist wie folgt gegliedert: Kapitel 2 gibt einen Überblick über den Stand der Forschung. Kapitel 3 beschreibt den Datensatz, die Stichprobe und die relevanten Variablen. Kapitel 4 stellt das methodische Vorgehen vor, insbesondere den Instrumentenvariablenansatz. Kapitel 5 präsentiert die empirischen Ergebnisse, einschließlich Subgruppen- und Robustheitsanalysen. Kapitel 6 diskutiert die Befunde im Lichte der bestehenden Literatur und geht auf mögliche Limitationen ein. Kapitel 7 schließt die Arbeit mit einem Fazit ab.
+
+
+% =========================================================
+% Literaturüberblick
+% =========================================================
+
+\section{Literaturüberblick}
+Die Frage, wie sich die Länge der Arbeitszeit auf Gesundheit und Wohlbefinden auswirkt, ist seit langem Gegenstand intensiver ökonomischer und gesundheitswissenschaftlicher Forschung. Während frühe Arbeiten vor allem auf theoretische Modelle der Zeitallokation und der Gesundheitsproduktion zurückgreifen (\cite{becker1965,grossman1972}), hat sich in den letzten Jahren eine Vielzahl empirischer Studien entwickelt, die den Zusammenhang zwischen Arbeitszeit und individuellen Outcomes mit unterschiedlichen Datenquellen und Identifikationsstrategien untersucht. 
+
+Das Fundament für die Analyse bildet das Modell der Zeitallokation von \textcite{becker1965}, in dem Individuen ihre begrenzte Zeit zwischen Arbeit, Freizeit und weiteren Aktivitäten aufteilen. Dabei berücksichtigen sie die Opportunitätskosten alternativer Aktivitäten. Arbeitszeit kann demnach nicht nur als Einkommensquelle, sondern auch als Einschränkung verfügbarer Freizeit und Erholungsressourcen verstanden werden \parencite{becker1965}. Daran anknüpfend erweitert \textcite{grossman1972} die ökonomische Perspektive, indem er Gesundheit als Kapitalstock modelliert, der durch Investitionen in Zeit und Ressourcen aufgebaut wird und sich über die Zeit durch einen exogenen Abschreibungsprozess reduziert. Längere Arbeitszeiten wirken in diesem Rahmen nicht direkt über eine erhöhte Abnutzung des gesundheitlichen Kapitalstocks, sondern vor allem indirekt. Sie schränken die verfügbare Zeit für gesundheitsförderliche Investitionen wie Schlaf, Erholung oder Sport ein und beeinflussen so die Nachfrage nach Gesundheitsgütern. Gesundheit wirkt dabei sowohl als Produktionsfaktor, der die Arbeitsfähigkeit und Produktivität bestimmt, als auch als Konsumgut, das individuelles Wohlbefinden direkt beeinflusst \parencite{grossman1972}. Zusammengenommen implizieren beide Modelle, dass Arbeitszeit sowohl förderliche Wirkungen durch Einkommens- und Ressourcenzuwachs als auch belastende Wirkungen durch Zeitstress und gesundheitliche Abnutzung haben kann.
+
+Empirische Studien versuchen, diese theoretischen Überlegungen zu überprüfen und den kausalen Zusammenhang zwischen Arbeitszeit und individuellen Outcomes zu identifizieren. Für Deutschland zeigen \textcite{cyganrehm2018}, dass gesetzliche Arbeitszeitverkürzungen zu einer Reduktion gesundheitlicher Beschwerden führen, was auf einen negativen Effekt langer Arbeitszeiten auf die Gesundheit hinweist. Ähnliche Evidenz liefern \textcite{berniell2020}, die auf Basis der französischen Arbeitszeitverkürzung zur 35-Stunden-Woche zeigen, dass kürzere Arbeitszeiten die Gesundheit verbessern und gesundheitsförderliches Verhalten wie Sport begünstigen. Neben objektiven und selbstberichteten Gesundheitsindikatoren untersucht \textcite{ahn2016}, ob kürzere Arbeitszeiten auch mit gesundheitsrelevantem Verhalten einhergehen und findet Hinweise auf mehr sportliche Aktivität und weniger Tabakkonsum. Zusammengefasst spricht die gesundheitliche Evidenz somit klar dafür, dass längere Arbeitszeiten gesundheitliche Ressourcen belasten.  
+
+Auch in Bezug auf das subjektive Wohlbefinden zeigen die vorliegenden empirischen Studien vergleichbare Muster. \textcite{holly2012} zeigen anhand von SOEP-Daten und OLS-Schätzungen, dass längere Arbeitszeiten die Work-Life-Balance verschlechtern und zu geringerer Zufriedenheit mit Freizeit und Familie führen, gleichzeitig aber mit einer höheren allgemeinen Lebenszufriedenheit verbunden sind, da zusätzliche Einkommen die negativen Zeitbelastungen teilweise kompensieren. Diese Befunde sind jedoch nicht kausal identifiziert und anfällig für Endogenität, was eine offene Forschungslücke hinterlässt. Aufbauend auf arbeitszeitpolitischen Reformen untersucht \textcite{lepinteur2019} die Verkürzung der Wochenarbeitszeit in Portugal und Frankreich und berichtet, dass das Wohlbefinden der Beschäftigten dadurch signifikant steigt. Ergänzend berichten \textcite{hamermesh2017} für Japan und Korea deutliche Verbesserungen des subjektiven Wohlbefindens nach gesetzlichen Arbeitszeitverkürzungen. Auch wenn sich die institutionellen Kontexte unterscheiden, lassen die Ergebnisse den Schluss zu, dass kürzere Arbeitszeiten das Wohlbefinden steigern, während längere Arbeitszeiten mit Belastungen und Einschränkungen einhergehen.  
+
+Insgesamt deutet die bisherige Literatur sowohl im Bereich Gesundheit als auch im Bereich Wohlbefinden konsistent darauf hin, dass lange Arbeitszeiten mit negativen Folgen für Erwerbstätige verbunden sind. Allerdings sind viele der Studien auf spezifische Länder, Reformkontexte oder Teilstichproben beschränkt. Für Deutschland existiert bislang nur eine kleine Anzahl kausal identifizierender Analysen, die meist auf gesetzlichen Arbeitszeitreformen beruhen. Damit ergibt sich eine Forschungslücke, die die vorliegende Arbeit adressiert, indem sie auf Basis repräsentativer Paneldaten und unter Nutzung eines Bartik-basierten Instrumentenvariablenansatz die kausalen Effekte von Arbeitszeit auf Gesundheit und Wohlbefinden in Deutschland untersucht. 
+
+
+% =========================================================
+% Datensatz und Variablen
+% =========================================================
+
+\section{Datensatz und Variablen}
+\subsection{Datenquelle}
+Um die Forschungsfrage empirisch zu beantworten, wird das Sozio-oekonomische Panel (SOEP) als Datenbasis verwendet. Dabei handelt es sich um eine seit 1984 jährlich durchgeführte, bundesweit repräsentative Haushaltsbefragung des DIW Berlin.  Die Studie erfasst jährlich rund 30,000 Personen in etwa 22,000 Haushalten. Aufgrund ihres Paneldesigns werden dieselben Individuen sowie neu hinzukommende Haushaltsmitglieder regelmäßig befragt, wodurch sowohl Querschnitts- als auch Längsschnittanalysen möglich sind \parencite{goebel2019}.
+
+Für die vorliegende Analyse wird die Version SOEP-Core v39 \parencite{soep_data} verwendet, welche den Erhebungszeitraum 1984 bis 2022 abdeckt. Die Grundgesamtheit besteht aus Personen in  Privathaushalten. Insgesamt bietet das SOEP somit eine langfristig angelegte Forschungsinfrastruktur für die empirische Sozial- und Wirtschaftsforschung in Deutschland und ist besonders geeignet zur Untersuchung individueller Erwerbs- und Gesundheitsverläufe im Zeitverlauf. 
+
+\subsection{Stichprobenkonstruktion}
+Die Analysestichprobe dieser Arbeit basiert auf einer Teilstichprobe des SOEP-Core, welche die Jahre von 1994 bis 2022 umfasst. Während der vollständige Datensatz ab 1984 verfügbar ist, beginnt der Analysezeitraum im Jahr 1994, da ab diesem Jahr alle für das empirische Modell relevanten Variablen durchgehend erhoben wurden. Informationen zu den verwendeten Variablen stammen aus der offiziellen SOEP-Dokumentation, dem SOEP Companion \parencite{soep_companion}.
+
+Berücksichtigt werden ausschließlich abhängig beschäftigte Personen, welche  einem regelmäßigen Arbeitsverhältnis, sowohl Voll- als auch Teilzeit nachgehen. Selbstständige, Auszubildende und nicht Erwerbstätige werden ausgeschlossen. Darüber hinaus ist die Stichprobe auf Personen im Alter von 18 bis 67 Jahren beschränkt, um die erwerbstätige Bevölkerung zwischen dem typischen Berufseinstieg und dem gesetzlichen Renteneintritt abzubilden. Zur weiteren Eingrenzung werden nur Beobachtungen mit einer tatsächlich geleisteten Wochenarbeitszeit zwischen 20 und 60 Stunden einbezogen. Damit werden reguläre voll- oder teilzeitnahe Beschäftigungsverhältnisse erfasst und gleichzeitig marginale Beschäftigungen, potenzielle Erfassungsfehler sowie extreme Ausreißer nach oben ausgeschlossen. Das monatliche Bruttoeinkommen wird  auf einen plausiblen Bereich zwischen 100 und 25,000 Euro begrenzt, um fehlerhafte oder nicht vergleichbare Angaben auszuschließen. 
+
+Beobachtungen mit fehlenden Werten in der Arbeitszeit oder in den Kontrollvariablen werden für die vorliegende Analyse aus dem Datensatz entfernt. Die resultierende Stichprobe umfasst Personen in Deutschland und bildet unter Anwendung der Panelgewichte die erwachsene Erwerbsbevölkerung repräsentativ ab. Für jede Person gehen sämtliche verfügbare Befragungsjahre ein. Beobachtungen mit fehlenden Werten in den Outcome-Variablen werden in den jeweiligen Schätzungen ausgelassen. Insgesamt umfasst die finale Panelstichprobe 252,702 Personen-Jahr-Beobachtungen von 45,685 individuellen Personen. 
+
+\subsection{Variablenbeschreibung}
+Im Folgenden werden alle zentralen Variablen der Analyse vorgestellt. Tabelle 1 enthält die gewichteten deskriptiven Statistiken (Mittelwerte, Standardabweichungen, Minima, Maxima, Anzahl Beobachtungen N) aller in der Analyse verwendeten Variablen: Outcome-Variablen, Treatment, Instrument sowie Kontrollvariablen.
+
+\begin{table}[htbp]
+\centering
+\caption{\label{tab:descstats} Deskriptive Statistiken der Variablen}
+\resizebox{\textwidth}{!}{
+\begin{tabular}[t]{llrrrrr}
+\toprule
+\textbf{Variable} & \textbf{Kategorie} & \textbf{Mittelwert} & \textbf{Standardabweichung} & \textbf{Minimum} & \textbf{Maximum} & \textbf{N} \\
+\midrule
+\multicolumn{7}{l}{\textbf{Metrische Variablen}}\\
+Bartik-Instrument & - & -0.02 & 0.3036 & -0.71 & 1.06 & 252,702 \\
+Wochenarbeitszeit & - & 40.46 & 8.9200 & 20.00 & 60.00 & 252,702 \\
+Gesundheitszustand & - & 6.37 & 2.1409 & 0.00 & 10.00 & 252,461 \\
+Zufriedenheit Freizeit  & - & 6.63 & 2.1109 & 0.00 & 10.00 & 230,152 \\
+Zufriedenheit Leben & - & 7.2 & 1.5708 & 0.00 & 10.00 & 250,967 \\
+Alter & - & 43.21 & 10.7150 & 18.00 & 67.00 & 252,702 \\
+Kinder im Haushalt & - & 0.53 & 1.0235 & 0.00 & 11.00 & 252,702 \\
+Berufserfahrung & - & 18.49 & 10.8733 & 0.04 & 52.17 & 252,702 \\
+Bruttomonatseinkommen & - & 2,799.25 & 1,974.6682 & 101.00 & 24,941.00 & 252,702 \\
+Bildungsdauer & - & 12.59 & 2.7605 & 7.00 & 18.00 & 252,702 \\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Binäre Variablen}}\\
+Geschlecht & Männlich & 0.572 & - & - & - & 252,702 \\
+ & Weiblich & 0.428 & - & - & - & 252,702 \\
+Erwerbsstatus & Vollzeit & 0.82 & - & - & - & 252,702 \\
+ & Teilzeit & 0.18 & - & - & - & 252,702 \\
+\bottomrule
+\end{tabular}}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Tabelle zeigt Mittelwert, Standardabweichung, Minimum, Maximum und Beobachtungszahl (N) 
+für die im Hauptteil der Analyse verwendeten Variablen. Die Stichprobe umfasst abhängig beschäftigte Personen im Alter von 18 bis 67 Jahren mit einer tatsächlich geleisteten Wochenarbeitszeit zwischen 20 und 60 Stunden. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022); eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Die Analyse berücksichtigt drei Outcomes. Zentraler Indikator für die Gesundheit von Erwerbstätigen ist der selbst eingeschätzte, allgemeine Gesundheitszustand der Befragten. Die Variable stammt aus der SOEP-Hauptbefragung und wird ursprünglich auf einer ordinalen Skala von 1 (sehr gut) bis 5 (schlecht) erfasst. Für die Vergleichbarkeit mit den anderen Outcomes wurde sie in dieser Analyse umkodiert, sodass alle Outcomes auf einer einheitlichen Skala von 0 bis 10  sind. Sie ermöglicht eine Analyse der subjektiven Gesundheit der Befragten. In der Stichprobe konzentrieren sich die Angaben des Gesundheitszustands auf die oberen Werte der Skala. Der Mittelwert liegt bei rund 6.4, die meisten Befragten gaben ihre Gesundheit als „gut“ an.  Die Verteilung ist deutlich linksschief, was insgesamt auf gute Gesundheitswahrnehmungen in der Stichprobe hinweist. Zur Analyse des Wohlbefindens der Erwerbstätigen werden zwei Outcomes berücksichtigt, die Lebenszufriedenheit und die Zufriedenheit mit der Freizeit. Die beiden Variablen werden auch im Rahmen der SOEP-Hauptbefragung erhoben und auf einer Skala von 0 (völlig unzufrieden) bis 10 (völlig zufrieden) gemessen. Sie decken zentrale Lebensbereiche ab, die sowohl durch Arbeitsbedingungen als auch durch private Lebensumstände beeinflusst werden können. Die Verwendung mehrerer Zufriedenheitsmaße ermöglicht eine differenzierte Analyse des subjektiven Wohlbefindens in Bezug auf die Arbeitszeit. Die beiden Outcomes weisen mit 6.63 und 7.2 hohe Mittelwerte auf. Die Verteilungen sind tendenziell linksschief, mit einer Häufung im oberen Skalenbereich. 
+
+Als Treatment-Variable wird die tatsächliche Wochenarbeitszeit verwendet. Sie erfasst die durchschnittlich in einer gewöhnlichen Woche geleistete Arbeitszeit in Stunden und umfasst sowohl die reguläre Arbeitszeit als auch Überstunden. Die Angabe basiert auf der Selbstauskunft der Befragten in der Haupterhebung des SOEP und liegt als metrische Variable vor. Der gewichtete Mittelwert liegt bei 40.46 Stunden, mit einer Standardabweichung von 8.9 Stunden. Die Verteilung zeigt eine starke Häufung bei runden Werten, insbesondere bei 40 Stunden pro Woche. Dies weist auf die Bedeutung tariflicher oder betrieblicher Standardarbeitszeiten hin.
+
+Die exogene Variation in der Arbeitszeit wird durch ein Shift-Share-Instrument erzeugt, das auf branchenspezifischen Arbeitszeittrends basiert und in der Literatur als Bartik-Instrument bezeichnet wird \parencite{bartik1991}. Dieses Vorgehen ist in der empirischen Forschung weit verbreitet und wird in der jüngeren Literatur umfassend thematisiert \parencite{goldsmith2020,borusyak2025}. Dabei wird zunächst die Branchenstruktur eines Bundeslands im Basiszeitraum 1991–1993 bestimmt, wobei der relative Anteil von Beschäftigten je Branche berechnet wird. Zur Abbildung der Wirtschaftssektoren wird die Klassifikation der Wirtschaftszweige (WZ 2008) des Statistischen Bundesamts verwendet \parencite{branchenklassifikation}. Die fixierten Branchenanteile (Shares) werden anschließend mit den jährlichen Veränderungen der durchschnittlichen tatsächlichen Arbeitszeit je Branche (Shocks) gewichtet. Die resultierende Variable liegt für jede Personen-Jahr-Beobachtung vor und variiert über Zeit und Region. Sie wird durch das Zusammenführen von Shares und Shocks auf Bundesland- und Jahresebene konstruiert und anschließend mit den Individualdaten zusammengeführt. Im Beobachtungszeitraum weist das Instrument eine Standardabweichung von 0.304 auf und bewegt sich im Bereich von -0.71 und 1.06. Histogramme zur Verteilung der zentralen Variablen befinden sich ergänzend in Anhang B.
+
+Zur Kontrolle individueller Heterogenität werden verschiedene soziodemografische und arbeitsmarktbezogene Merkmale einbezogen. Dazu zählen Alter (in Jahren), Geschlecht (binär), Bildungsdauer (in Jahren) und Anzahl der Kinder im Haushalt. Darüber hinaus wird für die Berufserfahrung (in Jahren), den Familienstand (nominal, 8 Kategorien) und für den Bruttolohn (in Euro pro Monat) kontrolliert. Sämtliche Kontrollvariablen stammen aus dem Personenfragebogen des SOEP. Die deskriptiven Statistiken der Kontrollvariablen sind in Tabelle 1 dargestellt. Sie basieren auf den vom DIW bereitgestellten Panelgewichten \parencite{soep_companion}, um eine repräsentative Abbildung der erwachsenen Erwerbsbevölkerung Deutschlands zu gewährleisten. In den kausalen Regressionsanalysen (Kapitel 4) wird hingegen auf eine Gewichtung verzichtet, da der Fokus auf der konsistenten Identifikation von Effekten liegt \parencite{solon2015}. Auf dieser Datengrundlage wird der empirische Ansatz entwickelt, beginnend mit der Basisspezifikation.
+
+
+% =========================================================
+% Methodik und Identifikationsansatz
+% =========================================================
+
+\section{Methodik und Identifikationsansatz}
+\subsection{Basisspezifikation}
+Die vorliegende Analyse zielt darauf ab, die kausalen Effekte der individuell geleisteten Wochenarbeitszeit auf die  Gesundheit sowie das subjektive Wohlbefinden von Erwerbstätigen in Deutschland zu identifizieren. In der Basisspezifikation dieser Arbeit werden mehrere Outcomes auf die tatsächliche Arbeitszeit regressiert, während für individuelle Charakteristiken und Personen- und Jahres-Fixed-Effects kontrolliert wird:
+
+\begin{equation}
+    \text{y}_{it} = \beta\cdot{\text{Arbeitszeit}_{it}}+\boldsymbol{X}_{it}'\alpha+\mu_i+\gamma_{t}+\epsilon_{it}
+\end{equation}
+
+Hierbei beinhaltet \( \boldsymbol{X}_{it} \) die bereits eingeführten Kontrollvariablen, welche vermutlich sowohl mit dem Treatment, also der tatsächlichen Arbeitszeit, als auch mit den individuellen Outcomes der Erwerbstätigen korrelieren. Die Personen-Fixed-Effects $\mu_i$ kontrollieren für zeitinvariante, unbeobachtete Heterogenität zwischen Personen, etwa sich über Zeit nicht verändernde Unterschiede in Gesundheitsverhalten oder arbeitsbezogenen Präferenzen. Damit ergeben sich die geschätzten Effekte ausschließlich aus Veränderungen innerhalb derselben Person über die Zeit. Die Jahres-Fixed-Effects $\gamma_t$ erfassen hingegen allgemeine, für alle Individuen gleichermaßen wirksame Entwicklungen. Dazu zählen beispielsweise Konjunkturschwankungen oder institutionelle Reformen im Zeitverlauf der Analyse. Sie verhindern, dass diese zeitlichen Entwicklungen die geschätzten Zusammenhänge verzerren.
+
+Im Fokus der Analyse steht der Koeffizient $\beta$, welcher den Effekt einer Erhöhung der tatsächlich geleisteten Wochenarbeitszeit um eine Stunde auf die Gesundheit und das Wohlbefinden der Erwerbstätigen repräsentiert. Die OLS-Schätzer für diesen Koeffizienten sind jedoch vermutlich verzerrt. Grund dafür ist die potenzielle Endogenität der Arbeitszeitvariable. Zum einen besteht die Möglichkeit, dass die Arbeitszeit von der gesundheitlichen Verfassung abhängt, etwa wenn Personen ihre Arbeitszeit reduzieren, weil sie gesundheitlich eingeschränkt sind, oder umgekehrt bei guter körperlicher Verfassung mehr arbeiten. Andererseits können unbeobachtete, zeitlich stabile Charakteristika, beispielsweise intrinsische Motivation, Belastbarkeit oder Erwerbspräferenzen, sowohl die Arbeitszeit als auch das subjektive Wohlbefinden systematisch beeinflussen. In beiden Fällen ist die Regressorvariable mit dem Fehlerterm korreliert, wodurch die zentrale Exogenitätsannahme verletzt wird und der OLS-Schätzer einen verzerrten Erwartungswert aufweist. Die Richtung dieses Bias ist nicht eindeutig. Wenn gesundheitlich eingeschränkte Personen ihre Arbeitszeit reduzieren, entsteht eine negative Selektion, sodass der OLS-Schätzer den wahren Effekt nach unten verzerrt und damit einen zu schwachen Zusammenhang zwischen Arbeitszeit und Gesundheit schätzt. Umgekehrt können unbeobachtete Faktoren wie hohe Motivation oder Belastbarkeit sowohl mit längeren Arbeitszeiten als auch mit besserem Wohlbefinden zusammenfallen, was zu einer positiven Verzerrung führen würde. Insgesamt ist von einem gemischten Bias auszugehen, der die Notwendigkeit einer exogenen Identifikationsstrategie unterstreicht. 
+
+\subsection{Instrumentenvariablenansatz}
+\subsubsection{Konstruktion des Instruments}
+Um dieses Endogenitätsproblem zu überwinden und den kausalen Effekt der tatsächlichen Arbeitszeit auf die Arbeitnehmer-Outcomes zu identifizieren, wird ein Instrumentenvariablenansatz verfolgt. Hierfür wird ein Bartik-Instrument konstruiert \parencite{bartik1991}. Die Grundidee besteht darin, dass Regionen in Abhängigkeit von ihrer Branchenstruktur unterschiedlich stark von nationalen branchenspezifischen Schocks betroffen sind. Das Instrument lässt sich daher als gewichtete Summe sektoraler Schocks interpretieren, wobei die Gewichte durch die fixierte Branchenstruktur bestimmt werden \parencite{goldsmith2020}.
+
+Die Konstruktion des Instruments erfolgt in zwei Schritten. Zunächst wird für jedes Bundesland der Anteil der Erwerbstätigen je Branche im Basiszeitraum 1991 bis 1993 berechnet. Eine Übersicht der Zusammensetzung der Stichprobe hinsichtlich Bundesland und Branche findet sich in Anhang C. Anschließend werden jährliche Schocks für jede Branche berechnet. In dieser Arbeit handelt es sich dabei um Änderungen der durchschnittlich geleisteten tatsächlichen Arbeitszeit je Branche und Jahr. Um mechanische Endogenität zu vermeiden, wird eine Leave-One-Out-Strategie angewandt. Dabei wird bei der Berechnung des branchenspezifischen Schocks jeweils die Region ausgeschlossen, für die das Instrument berechnet wird. Goldsmith-Pinkham et al. (2020) betonen die Notwendigkeit dieses Vorgehens, da ansonsten ein mechanischer Zusammenhang zwischen Instrument und Outcome entstehen kann. Formal lässt sich das Bartik-Instrument wie folgt darstellen:
+
+\begin{equation}
+\text{Z}_{rt} = \sum_is^0_{ri}\cdot\Delta x^{-r}_{it}
+\end{equation}
+
+wobei $Z_{rt}$ das Bartik-Instrument für Region $r$ im Jahr $t$ bezeichnet; $s^{0}_{ri}$ der (im Basiszeitraum 1991–1993 fixierte) Anteil der Erwerbstätigen in Region $r$, die in Branche $i$ tätig sind; und $\Delta x^{-r}_{it}$ die Veränderung der durchschnittlich tatsächlich geleisteten Arbeitszeit in Branche $i$ zwischen $t-1$ und $t$, berechnet in Leave-One-Out-Form ohne Daten aus Region $r$. Die resultierende Variable variiert über Regionen und Jahre, ist also für alle Individuen innerhalb einer Region-Jahr-Kombination identisch. Nach der Berechnung wird $Z_{rt}$ mit den Individualdaten zusammengeführt und dient in den Regressionsmodellen als Instrument für die tatsächlich geleistete Wochenarbeitszeit. 
+
+Unter Verwendung dieser Strategie wird jedoch nicht der durchschnittliche Treatment-Effekt (ATE) für die gesamte Population identifiziert, sondern der sogenannte Local Average Treatment Effect (LATE) im Sinne von \textcite{imbens1994}. Dieser beschreibt die Wirkung der tatsächlichen Arbeitszeit ausschließlich für die Gruppe von Erwerbstätigen, deren Arbeitszeitentscheidungen durch die im Bartik-Instrument enthaltenen branchenspezifischen Schocks beeinflusst werden („Compliers“). Für Personen, die von diesen Schocks nicht betroffen sind, werden keine kausalen Effekte identifiziert. Die Ergebnisse dieser Arbeit sind daher als lokale Effekte für die Complier-Gruppe zu interpretieren und nicht ohne Weiteres auf die gesamte Erwerbsbevölkerung übertragbar (\cite{angrist2009}).
+
+\subsubsection{Relevanz}
+Damit die Instrumentenvariablenstrategie das Problem der Endogenität der Arbeitszeit behebt und eine kausale Interpretation ermöglicht, müssen zwei zentrale Voraussetzungen erfüllt sein. Erstens die Relevanz des Instruments, zweitens seine Exogenität  \parencite{angrist2009}. Die Relevanzbedingung verlangt, dass das Bartik-Instrument systematisch mit der tatsächlich geleisteten Arbeitszeit zusammenhängt, auch wenn für Kovariaten sowie Personen- und Jahreseffekte kontrolliert wird. Diese Bedingung lässt sich empirisch überprüfen, typischerweise anhand der F-Statistik aus der First-Stage-Regression. Ist dieser Wert zu klein, drohen ineffiziente und verzerrte Schätzungen \parencite{staiger1997}. Formal ergibt sich die First-Stage-Schätzung aus folgender Gleichung:
+
+\begin{equation}
+\text{Arbeitszeit}_{it} = \pi\cdot\text{Z}_{rt} + \boldsymbol{X}_{it}'\theta + \mu_i + \gamma_{t} + u_{it}
+\end{equation}
+
+Dabei bezeichnet $Z_{rt}$ das Instrument und $\pi$ den First-Stage-Effekt. Die übrigen Terme entsprechen denen der zuvor eingeführten Basisspezifikation. Die Standardfehler werden in sämtlichen Regressionen auf Bundesland-Jahr-Ebene geclustert, da dies der Aggregationsebene des Instruments entspricht. Dies adressiert mögliche Intra‑Cluster‑Korrelation der Fehlerterme und verhindert eine Überschätzung der Präzision \parencite{cameron2015}. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.74\textwidth]{figures/figure1/firststage_scatter.png}
+  \caption{First-Stage-Zusammenhang zwischen Bartik-Instrument und durchschnittlicher Wochenarbeitszeit
+  (Bundesland–Jahr-Ebene). Hinweis: Es handelt sich um die Rohkorrelation ohne Fixed-Effects und Kovariaten. Datenbasis: SOEP v39}
+  \label{fig:firststage_scatter}
+\end{figure}
+
+Abbildung 1 illustriert zunächst den Zusammenhang zwischen dem Bartik-Instrument und der tatsächlich geleisteten Arbeitszeit auf Ebene von Bundesland und Jahr. Dabei handelt es sich um die einfache Rohkorrelation ohne Kontrolle für Kovariaten oder Fixed-Effects, deren Richtung und Stärke daher von den Ergebnissen der Regression abweichen können. Die Abbildung dient lediglich der Visualisierung der First-Stage-Beziehung. Das Regressionsmodell gemäß Gleichung 3 wird in Tabelle~2 berichtet:
+
+\begin{table}[H]
+\centering
+\caption{First-Stage-Schätzung: Einfluss des Instruments auf die Arbeitszeit}
+\begin{threeparttable}
+\begin{tabularx}{\textwidth}{l c}
+\toprule
+ & \textbf{Tatsächliche Arbeitszeit} \\
+\midrule
+Bartik-Instrument & $-0.563^{***}$ \\
+ & $(0.156)$ \\
+First-Stage-F-Statistik & 13.1 \\
+Anzahl Beobachtungen (N) & 252,702 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit. Die erklärende Variable ist das Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler (in Klammern) sind auf Bundesland~$\times$~Jahr-Ebene geclustert. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022); eigene Berechnungen.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Tabelle 2 bestätigt, dass das Instrument hinreichende Relevanz aufweist. Nach Staiger und Stock (1997) gilt ein Wert oberhalb von 10 als Faustregel gegen schwache Instrumente. Die First-Stage-F-Statistik beträgt 13.1 und liegt damit oberhalb des konventionell verwendeten Schwellenwerts. Inhaltlich deutet der geschätzte Koeffizient von $-0{.}563$ darauf hin, dass ein Anstieg des vorhergesagten Arbeitszeitdrucks um eine Einheit mit einer durchschnittlichen Reduktion der tatsächlich geleisteten Wochenarbeitszeit um etwa 0{.}56 Stunden verbunden ist. Das negative Vorzeichen bedeutet, dass Regionen, deren Branchenstruktur stärker in Branchen mit steigenden nationalen Arbeitszeittrends konzentriert ist, tendenziell geringere individuelle Arbeitszeiten aufweisen.
+
+\subsubsection{Exogenität}
+Die zweite Voraussetzung des Instrumentenvariablenansatzes betrifft die Exogenität des Instruments und lässt sich in zwei Teilannahmen unterteilen. Erstens muss das Instrument unabhängig von unbeobachteten Determinanten der Outcome-Variablen sein, beispielsweise individuellen Präferenzen, dem Gesundheitszustand oder sozialen Einstellungen, die nicht vollständig durch beobachtbare Kovariaten oder Fixed-Effects erfasst werden können. Eine Gefährdung dieser Annahme könnte vorliegen, wenn sich die regionale Branchenstruktur im Basisjahr systematisch entlang solcher unbeobachteten Merkmale verteilt hätte. Im vorliegenden Fall scheint die Unabhängigkeitsbedingung jedoch plausibel erfüllt. Die Branchenstruktur wird im Zeitraum 1991–1993 fixiert und gilt damit als quasiexogen, während die branchenspezifischen Arbeitszeitschocks auf nationaler Ebene aggregiert und unabhängig von individuellen Entscheidungen sind. Diese klassische Shift-Share-Logik bildet die Grundlage für die Annahme instrumenteller Exogenität \parencite{borusyak2025}. Zusätzlich reduziert die Verwendung einer Leave-One-Out-Konstruktion die Wahrscheinlichkeit, dass individuelle Beobachtungen mechanisch in die Schock-Komponente einfließen \parencite{goldsmith2020}.
+
+Zweitens setzt das Design die Gültigkeit der sogenannten Exklusionsrestriktion voraus. Diese besagt, dass das Instrument ausschließlich über die tatsächlich geleistete Arbeitszeit auf die Outcome-Variablen wirkt. Das Instrument darf nicht unmittelbar auf die Gesundheit oder das Wohlbefinden wirken. Diese Bedingung wäre verletzt, wenn die branchenspezifischen Schocks selbst kausal mit den Zielgrößen zusammenhingen. Bei veränderten Arbeitsbedingungen, Löhnen oder Beschäftigungssicherheit wäre dies der Fall. Die Exklusionsrestriktion kann nicht direkt empirisch getestet werden. Sie lässt sich jedoch durch theoretische Argumentation und zusätzliche Evidenz wie Placebo-Analysen stützen oder entkräften. Insgesamt erfordert das gewählte Identifikationsdesign eine kritische Auseinandersetzung mit seinen theoretischen Annahmen und potenziellen Schwächen. Die Frage der instrumentellen Exogenität nimmt dabei eine zentrale Rolle ein und wird im folgenden Kapitel durch gezielte empirische Tests untersucht. 
+
+Schließlich erfordert die LATE-Interpretation neben Relevanz und Exogenität auch die sogenannte Monotonieannahme. Diese besagt, dass das Instrument die Arbeitszeit aller betroffenen Personen in dieselbe Richtung beeinflusst, sodass keine „Defiers“ existieren, deren Reaktion der induzierten Variation entgegengesetzt verläuft. Für das verwendete Bartik-Instrument erscheint diese Annahme plausibel, da die branchenspezifischen Schocks auf nationaler Ebene konstruiert und über die regionale Branchenstruktur gewichtet werden. Empirisch lässt sich diese Annahme jedoch nicht direkt überprüfen, sodass die Ergebnisse im Sinne eines LATE für die Gruppe der Compliers zu interpretieren sind. Nachdem die Identifikationsstrategie etabliert ist, wenden wir die Methode nun auf die Daten an.
+
+
+% =========================================================
+% Empirische Ergebnisse
+% =========================================================
+
+\section{Empirische Ergebnisse}
+Die nachfolgenden Analysen untersuchen den kausalen Zusammenhang zwischen der tatsächlich geleisteten Wochenarbeitszeit und verschiedenen Maßen von Gesundheit und subjektivem Wohlbefinden. Auf Basis theoretischer Überlegungen (\cite{becker1965,grossman1972}) und der bisherigen empirischen Evidenz (\cite{cyganrehm2018,berniell2020,holly2012}) ergeben sich zwei zentrale Hypothesen:
+
+\begin{itemize}
+    \item \textbf{H1:} Eine Erhöhung der tatsächlichen Arbeitszeit verringert den selbst eingeschätzten Gesundheitszustand.
+    \item \textbf{H2:} Eine Erhöhung der tatsächlichen Arbeitszeit senkt die Lebenszufriedenheit und die Zufriedenheit mit der Freizeit.
+\end{itemize}
+
+Zur empirischen Prüfung dieser Hypothesen wird das im vorherigen Kapitel beschriebene Instrumentenvariablenverfahren verwendet. Die Second-Stage-Schätzung basiert auf folgender Gleichung:
+
+\begin{equation}
+    \text{y}_{it} = \beta\cdot\widehat{\text{Arbeitszeit}_{it}}+\boldsymbol{X}_{it}'\alpha+\mu_i+\gamma_{t}+\epsilon_{it}
+\end{equation}
+
+Hier bezeichnet \( y_{it} \) die jeweilige Outcome-Variable und \( \widehat{\text{Arbeitszeit}}_{it} \) die vorhergesagte Arbeitszeit aus der First-Stage-Schätzung. Die übrigen Terme entsprechen denen der Gleichung (1). Da $\widehat{\text{Arbeitszeit}}_{it}$ ausschließlich auf exogener Variation aus dem Bartik-Instrument basiert und sowohl unbeobachtete zeitinvariante Heterogenität durch $\mu_i$, als auch gemeinsame Trends durch $\gamma_t$ kontrolliert werden, erlaubt die geschätzte Wirkung von $\widehat{\text{Arbeitszeit}}_{it}$ eine kausale Interpretation unter den in Kapitel 4.2 dargestellten Identifikationsannahmen. Wie bereits erläutert stellt dieser kausale Effekt den Local Average Treatment Effect (LATE) für die Gruppe von Erwerbstätigen, deren Arbeitszeit durch die branchenspezifischen Schocks beeinflusst wird, dar. 
+
+Die empirischen Ergebnisse werden im Folgenden in vier Schritten präsentiert. Abschnitt~5.1 zeigt die Haupteffekte für die Gesamtstichprobe. In Abschnitt~5.2 wird die Subgruppe der hohen Einkommen separat betrachtet. Abschnitt~5.3 analysiert systematisch mögliche Heterogenität entlang beobachtbarer Merkmale, während Abschnitt~5.4 und 5.5 verschiedene Exogenitäts- und Robustheitstests präsentiert.
+
+\subsection{Haupteffekte}
+Zur empirischen Überprüfung der in Abschnitt~5 formulierten Hypothesen zeigt Tabelle 3 die Ergebnisse der Second-Stage-Schätzung gemäß Gleichung~4. Präsentiert werden die geschätzten Effekte der tatsächlich geleisteten Wochenarbeitszeit auf die drei Zielgrößen: den allgemeinen Gesundheitszustand, die Lebenszufriedenheit und die Zufriedenheit mit der Freizeit. Zusätzlich werden zum Vergleich die entsprechenden OLS-Schätzungen berichtet.
+
+\begin{table}[htbp]
+\centering
+\caption{OLS- und IV-Schätzungen: Einfluss der tatsächlichen Arbeitszeit auf Outcomes der Erwerbstätigen}
+\begin{tabularx}{\textwidth}{l *{3}{>{\centering\arraybackslash}X}}
+\toprule
+ & \textbf{(1)} & \textbf{(2)} & \textbf{(3)} \\
+\midrule
+\multicolumn{4}{l}{\textit{A. OLS-Schätzungen}} \\
+\midrule
+Tatsächliche Arbeitszeit & -0.006*** & -0.003*** & -0.038*** \\
+& (0.001) & (0.001) & (0.001) \\
+\midrule
+\multicolumn{4}{l}{\textit{B. IV-Schätzungen}} \\
+\midrule
+Tatsächliche Arbeitszeit & 0.214{+} & 0.166 & -0.026 \\
+& (0.129) & (0.104) & (0.110) \\
+First-Stage-F-Statistik  & 14.5 & 14.0 & 10.4 \\
+N & 252,461  & 250,967 & 230,152 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variablen sind die in den Spalten angegebenen Outcomes: (1) Gesundheitszustand, (2) allgemeine Lebenszufriedenheit, (3) Zufriedenheit mit der Freizeit. Dargestellt sind jeweils OLS- und IV-Schätzungen, wobei in den IV-Modellen die tatsächlich geleistete Wochenarbeitszeit mit dem Bartik-Instrument instrumentiert wird. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler (in Klammern) sind auf Bundesland~$\times$~Jahr-Ebene geclustert. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: SOEP v39, 1994--2022; eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Tabelle 3 zeigt, dass der Gesundheitszustand signifikant positiv von der tatsächlich geleisteten Wochenarbeitszeit beeinflusst wird. Der geschätzte Koeffizient beträgt $0.214$ und ist auf dem 10\%-Niveau signifikant. Dieser Befund widerspricht der theoretischen Erwartung einer gesundheitlichen Belastung durch längere Arbeitszeiten. In der OLS-Schätzung hingegen beträgt der Koeffizient $-0{.}006$ und ist hochsignifikant, was auf einen schlechteren Gesundheitszustand bei längerer Arbeit schließen lässt, aber vermutlich durch Endogenität verzerrt ist.
+
+Für die Lebenszufriedenheit ergibt sich ein positiver Effekt von $0{.}166$, der jedoch statistisch nicht signifikant ist. Der geschätzte Effekt auf die Zufriedenheit mit der Freizeit fällt bei $-0{.}026$ ebenfalls klein und statistisch insignifikant aus. Die OLS-Schätzungen für beide Variablen zeigen mit $-0{.}003$ und $-0{.}038$ signifikant negative Effekte, was die Vorstellung einer reduzierten Lebensqualität bei längerer Arbeitszeit unterstützt, allerdings unterliegt auch hier die Kausalinterpretation erheblichen Einschränkungen.  Im Vergleich der OLS- mit den IV-Schätzungen zeigt sich, dass unbeobachtete Einflussfaktoren wie Gesundheitsstatus, Präferenzen oder Motivation systematisch mit der Arbeitszeit korreliert sein könnten und die OLS-Ergebnisse verzerren. Unter einer gültigen Identifikationsstrategie isoliert die IV-Schätzung den kausalen Effekt und bewegt sich in Richtung weniger negativer oder sogar leicht positiver Wirkungen. Außerdem liegen die First-Stage-F-Statistiken in allen drei Modellen oberhalb des von Staiger und Stock (1997) vorgeschlagenen Schwellenwerts von 10, was auf eine hinreichende instrumentelle Relevanz des Bartik-Instruments hinweist. Wenn zusätzlich die Exogenität des Instruments gilt, lässt sich der Effekt aus der IV-Schätzung kausal interpretieren.
+
+Damit lassen sich die in Abschnitt 5 formulierten Hypothesen wie folgt beurteilen. H1, wonach längere Arbeitszeiten den selbst eingeschätzten Gesundheitszustand verschlechtern, wird durch die IV-Ergebnisse nicht bestätigt. Stattdessen ist der Effekt positiv und signifikant. H2, die eine negative Wirkung längerer Arbeitszeiten auf Lebens- und Freizeitzufriedenheit annimmt, findet ebenfalls keine empirische Unterstützung, da die Effektschätzungen nicht signifikant ausfallen. Insgesamt widersprechen die kausalen Befunde somit den theoretischen Erwartungen sowie einem Großteil der bisherigen empirischen Evidenz.
+
+\subsection{Subgruppenanalyse: Höhere Einkommensgruppe}
+Die Auswirkungen von Arbeitszeit auf Wohlbefinden und Gesundheit können stark vom sozioökonomischen Status der Erwerbstätigen abhängen. Für Personen in der höheren Einkommensgruppe, also einem Einkommen über dem Medianeinkommen ist einerseits anzunehmen, dass sie beruflich stärker eingebunden sind und damit längere Arbeitszeiten mit höherem Stress oder geringerer Freizeit einhergehen. Andererseits könnten längere Arbeitszeiten in dieser Gruppe auch positiv wahrgenommen werden, etwa als Ausdruck beruflichen Erfolgs, intrinsischer Motivation oder Status.
+
+\begin{table}[htbp]
+\centering
+\caption{Second-Stage-IV-Schätzungen für höhere Einkommensgruppen: Einfluss der tatsächlichen Arbeitszeit auf die Outcomes}
+\begin{tabularx}{\textwidth}{l *{4}{>{\centering\arraybackslash}X}}
+\toprule
+ & \textbf{(1)} & \textbf{(2)} & \textbf{(3)}\\
+\midrule
+Tatsächliche Arbeitszeit & 0.181 & 0.228* & 0.026 \\
+ & (0.119) & (0.110) & (0.109) \\
+First-Stage-F-Statistik & 11.7 & 11.2 & 10.1 \\
+N & 126,002 & 125,256 & 117,669 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variablen sind die in den Spalten angegebenen Outcomes: (1) Gesundheitszustand, (2) allgemeine Lebenszufriedenheit, (3) Zufriedenheit mit der Freizeit. Die unabhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit, instrumentiert mit dem Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler (in Klammern) sind auf Bundesland~$\times$~Jahr-Ebene geclustert. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022); eigene Berechnungen.
+\end{tablenotes}
+\end{table} 
+
+Tabelle 4 zeigt die Ergebnisse der IV-Schätzung für Personen mit einem monatlichen Bruttoeinkommen oberhalb des Medianwerts. Die First-Stage-F-Statistiken liegen in allen drei Modellen über dem Wert von 10, womit das Kriterium zur Vermeidung von Weak-Instruments-Problemen erfüllt ist \parencite{staiger1997}. Auffällig ist der signifikant positive Effekt auf die Lebenszufriedenheit. Eine um eine Stunde längere Wochenarbeitszeit ist mit einem Anstieg der Zufriedenheit um etwa 0{.}23 Punkte (p < 0{.}05) verbunden. Für Gesundheit und Freizeit ergeben sich keine signifikanten Effekte. Der Befund lässt sich dahingehend interpretieren, dass Besserverdienende zusätzliche Arbeitszeit nicht als Belastung empfinden, sondern diese vielmehr als sinnstiftend oder lohnend wahrnehmen, beispielsweise durch höhere Anerkennung, Aufstiegschancen oder der eigenen Selbstverwirklichung im Beruf. Ein ähnliches Muster findet sich auch in den OLS-Ergebnissen von \textcite{holly2012}, die für Deutschland einen positiven Zusammenhang zwischen längerer Arbeitszeit und allgemeiner Lebenszufriedenheit dokumentieren, allerdings ohne kausale Identifikation. Die Abwesenheit negativer Effekte auf Gesundheit und Freizeit deutet darauf hin, dass hohe Arbeitszeiten in dieser Subgruppe weniger stark zu Erschöpfung führen.
+
+Insgesamt legen die Ergebnisse nahe, dass sich die Wirkung von Arbeitszeit auf das Wohlbefinden systematisch entlang ökonomischer Ressourcen und beruflicher Stellung unterscheidet. Ob und in welchem Ausmaß sich solche Heterogenitäten auch in anderen sozioökonomischen Gruppen zeigen, wird im folgenden Abschnitt systematisch untersucht. 
+
+\subsection{Heterogenitätsanalyse}
+Aufbauend auf den Ergebnissen der Subgruppe der höheren Einkommen zeigt Tabelle 5, ob sich die Effekte tatsächlicher Arbeitszeit auch in anderen sozioökonomischen Gruppen unterscheiden. Hierzu werden separate IV-Schätzungen für ausgewählte Gruppen berichtet, darunter Männer und Frauen, Vollzeit- und Teilzeitbeschäftigte, Haushalte mit und ohne Kinder sowie jüngere und ältere Erwerbstätige. Ziel ist es,  Heterogenitäten sichtbar zu machen. Dadurch soll ein differenzierteres Bild der arbeitszeitbezogenen Belastungen entstehen. 
+
+\subsubsection{Unterschiede nach Geschlecht}
+Die Differenzierung nach Geschlecht ist theoretisch besonders relevant, da Männer und Frauen typischerweise unterschiedlichen Erwerbsverläufen und Rollenerwartungen ausgesetzt sind. Frauen arbeiten deutlich häufiger in Teilzeit als Männer. 2024 lag die Teilzeitquote bei Frauen bei rund 50 \%, während sie bei Männern lediglich 13 \% betrug \parencite{destatis2025teilzeit}. Außerdem übernehmen Frauen im Durchschnitt mehr unbezahlte Sorgearbeit, bei einem Gender Care Gap von +44,3 \% \parencite{destatis2024care}.  Solche Unterschiede können dazu führen, dass sich sowohl das Ausmaß als auch die Effekte tatsächlicher Arbeitszeit unterscheiden.
+
+Die Ergebnisse bestätigen diese Erwartung. Während sich für Männer ein schwach signifikanter positiver Effekt auf die Lebenszufriedenheit zeigt (0{.}126, p < 0{.}1), bleibt bei Frauen jeglicher Zusammenhang statistisch insignifikant. Auch die Dimension der geschätzten Effekte unterscheidet sich. So ist der Koeffizient für die gesundheitliche Wirkung bei Männern mit 0{.}112 positiv, bei Frauen liegt er bei 0{.}799, jedoch mit einem sehr großen Standardfehler von 1{.}08, was auf eine geringe Präzision hinweist. 
+
+Besonders fällt der Unterschied bei der Relevanz des Instruments auf. Die First-Stage-F-Statistiken weisen bei Männern mit Werten über 20 auf eine ausreichende instrumentelle Variation hin, fallen bei Frauen jedoch durchweg unter 10, mit Werten unter 1. Dies deutet auf ein schwaches Instrument und damit auf eine wahrscheinlich verzerrte Schätzung hin. Die geringe instrumentelle Relevanz bei Frauen könnte darauf zurückzuführen sein, dass ihre tatsächliche Arbeitszeit stärker von nicht-marktlichen Faktoren wie familiären Verpflichtungen geprägt ist und weniger auf branchenspezifische Arbeitszeittrends reagiert.
+
+\begin{landscape}
+\begin{table}[htbp]
+\centering
+\caption{Heterogenitätsanalyse: IV-Schätzungen der tatsächlichen Arbeitszeit auf die Outcomes}
+\hsize=\linewidth
+\begin{tabularx}{\linewidth}{l *{3}{>{\centering\arraybackslash}X} >{\centering\arraybackslash}X}
+\toprule
+\textbf{Subgruppe} & \textbf{Gesundheitszustand} & \textbf{Lebenszufriedenheit} & \textbf{Freizeitzufriedenheit} & \textbf{Durchschnittliche N} \\
+\midrule
+\textbf{Männer} & 0.112 & 0.126$^{+}$ & 0.063 & 132{,}631 \\
+ Clusterrobuste SE & (0.082) & (0.070) & (0.102) & \\
+ First-Stage-F-Statistik & [20.3] & [20.1] & [14.7] & \\
+\midrule
+\textbf{Frauen} & 0.799 & 0.432 & -0.460 & 111{,}896 \\
+ Clusterrobuste SE & (1.08) & (0.690) & (0.596) & \\
+ First-Stage-F-Statistik & [0.67] & [0.55] & [0.61] & \\
+\midrule
+\textbf{Vollzeit} & 0.180$^{+}$ & 0.168$^{+}$ & -0.011 & 193{,}504 \\
+ Clusterrobuste SE & (0.108) & (0.098) & (0.116) & \\
+ First-Stage-F-Statistik & [18.8] & [18.2] & [13.9] & \\
+\midrule
+\textbf{Teilzeit} & 1.01 & 0.252 & 1.09 & 51{,}022 \\ 
+ Clusterrobuste SE & (1.92) & (0.700) & (8.93) & \\
+ First-Stage-F-Statistik & [0.30] & [0.25] & [0.01] & \\
+\midrule
+\textbf{Haushalt mit Kindern} & 0.234 & 0.018 & -0.019 & 106{,}752 \\
+ Clusterrobuste SE & (0.142) & (0.085) & (0.136) & \\
+ First-Stage-F-Statistik & [8.75]   & [9.02] & [6.34] & \\
+\midrule
+\textbf{Haushalt ohne Kinder} & 0.233 & 0.312 & -0.080 & 137{,}774 \\
+ Clusterrobuste SE & (0.170) & (0.197) & (0.150) & \\
+ First-Stage-F-Statistik & [6.87] & [6.33] & [5.06] & \\
+\midrule
+\textbf{Alter < 40 Jahre} & 0.156$^{+}$ & 0.078 & 0.018 & 88{,}782 \\
+ Clusterrobuste SE & (0.086) & (0.054) & (0.089) & \\
+ First-Stage-F-Statistik & [18.3] & [18.3] & [13.5] & \\
+\midrule
+\textbf{Alter \(\geq\) 50 Jahre} & 0.155 & 0.495 & 0.111 & 78{,}944 \\
+ Clusterrobuste SE & (0.288) & (0.499) & (0.245) & \\
+  First-Stage-F-Statistik & [1.82] & [1.87] & [2.11] & \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.5em}
+\noindent\parbox{\linewidth}{%
+  \small
+  \textit{Hinweis}: Angegeben sind IV-Koeffizienten, clusterrobuste Standardfehler (in Klammern) sowie First-Stage-F-Statistiken [in eckigen Klammern]. Durchschnittliche N: Durchschnittliche Fallzahl über die drei Outcomes. Signifikanzniveaus: $^{+}$ p $<$ 0{.}1, * p $<$ 0{.}05, ** p $<$ 0{.}01, *** p $<$ 0{.}001. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022).}
+\end{table}
+\end{landscape}
+
+\subsubsection{Unterschiede nach Erwerbsmodell}
+Ein weiterer zentraler Differenzierungsaspekt ist das Erwerbsmodell. Im Zentrum steht die Frage, ob sich der Einfluss der Arbeitszeit auf die Outcomes zwischen Voll- und Teilzeitbeschäftigten unterscheidet. Theoretisch relevant ist diese Unterscheidung, da beide Gruppen verschiedenen Ausgangsbedingungen unterliegen. Während Vollzeitkräfte typischerweise höhere zeitliche Belastungen, aber auch stärkere institutionelle Einbindung und Routinen aufweisen, sind Teilzeitbeschäftigte oft stärker durch familiäre Verpflichtungen oder atypische Arbeitszeiten geprägt \parencite{destatis2025teilzeit,destatis2024care}. Dementsprechend könnten sich der Einfluss von Arbeitszeit auf den Gesundheitszustand und die Lebenszufriedenheit systematisch unterscheiden.
+
+Tatsächlich zeigen die Schätzergebnisse, dass nur für Vollzeitbeschäftigte belastbare Ergebnisse vorliegen. In dieser Gruppe wird eine leicht positive Wirkung der tatsächlich geleisteten Wochenarbeitszeit auf die Lebenszufriedenheit (0{.}168; p < 0{.}1) und auf die Gesundheit (0.180; p < 0.1) festgestellt, während für die Freizeitzufriedenheit keine signifikanten Effekte auftreten. Alle geschätzten Koeffizienten haben positive Vorzeichen, was auf eine günstige Bewertung zusätzlicher Arbeitszeit unter Vollzeitbeschäftigten hindeutet. Die First-Stage-F-Statistiken liegen mit Werten von 13{.}9 bis 18{.}8 deutlich oberhalb des Schwellenwerts von 10 und bestätigen die hohe Relevanz des Instruments in dieser Subgruppe. Damit ist eine kausale Interpretation der Ergebnisse grundsätzlich möglich.
+
+Demgegenüber ist das Bartik-Instrument bei Teilzeitbeschäftigten weitgehend wirkungslos. Die First-Stage-F-Statistiken liegen in allen Modellen unterhalb der kritischen Grenze, was auf ein Weak-Instrument-Problem hinweist \parencite{staiger1997}. Entsprechend sind auch die Second-Stage-Koeffizienten mit sehr großen Standardfehlern statistisch insignifikant. Diese geringe instrumentelle Relevanz könnte darauf zurückzuführen sein, dass Teilzeitkräfte weniger stark in branchenspezifische Routinen eingebunden sind oder ihre Arbeitszeiten flexibler und stärker durch individuelle oder familiäre Präferenzen bestimmt werden. Insgesamt spricht die Evidenz dafür, dass sich die Wirkung der tatsächlichen Arbeitszeit primär bei Vollzeitbeschäftigten manifestiert, sowohl hinsichtlich der statistischen Identifizierbarkeit als auch hinsichtlich ökonomisch interpretierbarer Effekte. Für Teilzeitkräfte bleibt offen, ob die Effekte tatsächlich ausbleiben oder aufgrund der begrenzten Identifikationsmöglichkeiten mit diesen Daten nicht nachweisbar sind.
+
+\subsubsection{Unterschiede nach Familiensituation}
+Die Unterscheidung nach Haushalten mit oder ohne Kindern erlaubt Aussagen über Wechselwirkungen zwischen Arbeitszeit, familiären Verpflichtungen und Wohlbefinden. Eltern stehen aufgrund der Kinder unter höherem Zeitdruck \parencite{walper2022}, wodurch eine Arbeitszeitverlängerung besonders belastend sein könnte. Die empirischen Ergebnisse zeigen jedoch keine konsistenten Effekte in einer der beiden Gruppen, alle Koeffizienten bleiben insignifikant. Auch die First-Stage-F-Statistiken liegen unterhalb der kritischen Schwelle von 10, was die Identifikation kausaler Effekte einschränkt. Insgesamt liefert diese Differenzierung also keine belastbare Evidenz für systematische Unterschiede im Zusammenhang zwischen Arbeitszeit und Wohlbefinden, auch weil die Relevanzbedingung des Instruments nicht erfüllt wird. 
+
+\subsubsection{Unterschiede nach Alter}
+Auch eine Aufspaltung nach Alter kann theoretisch gerechtfertigt werden. Ältere Erwerbstätige könnten empfindlicher auf zusätzliche Arbeit reagieren, während die Reaktion jüngerer Erwerbstätiger flexibler ausfallen kann. 
+Tatsächlich finden sich keine signifikanten Effekte in den Modellen für ältere Beschäftigte. Die geschätzten Effekte auf Lebenszufriedenheit und Freizeitzufriedenheit sind positiv, jedoch insignifikant, und die F-Statistiken bewegen sich durchweg im Bereich unter 2. Das bedeutet, dass das Instrument in dieser Gruppe keine hinreichende Variation erzeugt. Für die jüngere Gruppe liegt die instrumentelle Relevanz mit F-Statistiken um 13 -- 18 höher, dennoch bleiben auch hier die Effekte auf die meisten Outcomes insignifikant. Ein schwach positiver Zusammenhang mit dem subjektiven Gesundheitszustand (p < 0.1) deutet darauf hin, dass mehr Arbeitszeit nicht notwendigerweise belastend wirkt. 
+
+\subsubsection{Zusammenfassung der Heterogenitätsergebnisse}
+Diese Subgruppenanalysen verdeutlichen, dass die Wirkung von tatsächlich geleisteter Arbeitszeit auf Gesundheit und Wohlbefinden stark vom sozioökonomischen Kontext abhängt. Besonders bei Vollzeitbeschäftigten und Männern zeigen sich  signifikante positive Effekte, etwa auf die Lebenszufriedenheit. In diesen Gruppen liegt auch die instrumentelle Relevanz durchgehend über dem konventionellen Schwellenwert (First-Stage-F-Statistiken zwischen 14 und 20), sodass kausale Interpretationen zunächst zulässig erscheinen. Demgegenüber ist die Identifikationsstärke des Instruments in den Gruppen mit schwächerer Arbeitsmarktanbindung, beispielsweise Teilzeitbeschäftigte, Frauen, Eltern und älteren Personen, durchgehend gering. Hier fallen die F-Statistiken teils deutlich unter 10, in einigen Fällen sogar unter 1, was auf eine schwache oder gar nicht vorhandene instrumentelle Variation in diesen Gruppen hinweist. Die daraus resultierenden Schätzungen sind folglich statistisch unpräzise und ökonomisch schwer interpretierbar. Ein zentrales Ergebnis der Analyse ist daher, dass das Bartik-Instrument vor allem bei stabil integrierten Erwerbsgruppen greift, deren Arbeitszeit stärker durch branchenspezifische Dynamiken geprägt ist, wie bei Männern in Vollzeit. In anderen Gruppen dominieren  individuelle oder haushaltsbezogene Faktoren die Arbeitszeitentscheidung, sodass nationale Branchentrends nur eingeschränkt kausale Identifikationen ermöglichen. 
+
+Insgesamt heben die Befunde die Bedeutung kontextspezifischer Politikmaßnahmen hervor. Eine pauschale Wirkung von Arbeitszeitveränderungen auf das Wohlbefinden lässt sich empirisch nicht nachweisen, vielmehr sind Effekte stark von der Lebenslage, dem Geschlecht und der Erwerbsform abhängig. Die beobachteten Unterschiede unterstreichen die Bedeutung der Validierung der Modellannahmen, weshalb diese im nächsten Schritt geprüft werden. 
+
+\subsection{Überprüfung der Exogenität}
+Ein zentraler Bestandteil zur Validierung der Exogenitätsannahme des Instruments besteht darin zu prüfen, ob das Bartik-Instrument systematisch mit beobachtbaren Kovariaten korreliert ist. Ein solches Ungleichgewicht würde darauf hindeuten, dass die vom Instrument hervorgerufene Variation nicht hinreichend unabhängig ist, was die Exogenitätsannahme infrage stellen würde \parencite{angrist2009}. Das Instrument sollte, wenn es exogen ist, nicht systematisch mit Kontrollvariablen wie Einkommen, Bildung oder demografischen Merkmalen zusammenhängen. Zur Durchführung dieses Tests werden die wichtigsten Kovariaten jeweils separat auf das Bartik-Instrument regressiert, unter Kontrolle von Personen- und Jahres-Fixed-Effects sowie Cluster der Standardfehler auf Bundesland-Jahr-Ebene. Die getesteten Kovariaten umfassen Bildungsjahre, Einkommen, Anzahl der Kinder im Haushalt, Familienstand, Berufserfahrung und Erwerbsstatus.
+
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{Zusammenhang zwischen Bartik-Instrument und Kovariaten (Balance-Test)}
+\label{tab:balance}
+\begin{tabularx}{\textwidth}{l *{6}{>{\centering\arraybackslash}X}}
+\toprule
+& \textbf{(1)} & \textbf{(2)} & \textbf{(3)} & \textbf{(4)} & \textbf{(5)} & \textbf{(6)} \\
+\midrule
+Instrument 
+& -0.011 & -7.082 & 0.011 & 0.021 & -0.039 & 0.004 \\
+& (0.013) & (31.118) & (0.026) & (0.024) & (0.043) & (0.007) \\
+\bottomrule
+\end{tabularx}
+\end{threeparttable}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variablen sind die in den Spalten angegebenen Kovariaten: (1) Bildungsjahre, (2) Einkommen, (3) Anzahl der Kinder im Haushalt, (4) Familienstand, (5) Berufserfahrung, (6) Erwerbsstatus. Die erklärende Variable ist jeweils das Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Die Ergebnisse des Balance-Tests zeigen keine systematische Korrelation zwischen dem Bartik-Instrument und den getesteten Kovariaten, keiner der Regressionskoeffizienten erreicht ein konventionelles Signifikanzniveau und die Effektgrößen sind gering. Angesichts der hohen Standardfehler deutet dies auf eine große statistische Unsicherheit, aber keine systematische Abweichung hin. Die Kovariaten Alter und Geschlecht wurden aus dem Test ausgeschlossen, da sie durch die Verwendung von Personen-Fixed-Effects innerhalb der Panelstruktur nicht identifizierbar sind. Auch Branche und Bundesland wurden nicht berücksichtigt, da sie Bestandteil der Instrumentenkonstruktion sind und somit nicht unabhängig vom Bartik-Instrument variieren. 
+Insgesamt stützen die Ergebnisse des Balance-Tests die Annahme, dass das Bartik-Instrument unabhängig von beobachtbaren prädiktiven Kovariaten ist, da keine signifikanten Korrelationen festgestellt wurden. Dies ist ein zentrales Argument für die Plausibilität der Unabhängigkeitsannahme im IV-Ansatz.
+
+Ein weiterer Test zur Überprüfung der instrumentellen Exogenität besteht in der Analyse sogenannter Placebo-Outcomes, also abhängiger Variablen, die nicht kausal durch die tatsächliche Arbeitszeit beeinflusst werden sollten. Die Idee dieses Tests ist, dass ein gültiges Instrument nur über die definierte Kausalstruktur auf relevante Zielgrößen wirken darf, nicht jedoch auf willkürlich gewählte, nicht zusammenhängende Variablen. Wird ein signifikanter Zusammenhang zu solchen Placebo-Variablen festgestellt, könnte dies auf eine Verletzung der Exklusionsrestriktion hindeuten. Im Rahmen dieser Arbeit wurden drei solcher Outcomes verwendet: das selbstberichtete Körpergewicht, die Körpergröße sowie das Interesse an Politik. Alle drei Variablen entstammen der individuellen Haupterhebung des SOEP und weisen keinen plausiblen kausalen Zusammenhang zur tatsächlichen Wochenarbeitszeit auf. In der üblichen Second-Stage-Spezifikation des IV-Modells wird überprüft, ob sich über die instrumentierte Arbeitszeit ein Zusammenhang zu den Placebo-Variablen ergibt.
+
+\begin{table}[htbp]
+\centering
+\caption{Wirkung der instrumentierten tatsächlichen Arbeitszeit auf Placebo-Outcomes}
+\label{tab:placebo}
+\begin{tabularx}{\textwidth}{l *{3}{>{\centering\arraybackslash}X}}
+\toprule
+& \textbf{Körpergewicht} & \textbf{Körpergröße} & \textbf{Politikinteresse} \\
+\midrule
+Tatsächliche Arbeitszeit 
+& -0.549 & 0.016 & -0.047 \\
+& (0.532) & (0.186) & (0.060) \\
+First-Stage-F-Statistik & 3.58 & 3.58 & 3.58 \\
+N & 97,443 & 97,443 & 97,443 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variablen sind die Placebo-Outcomes: (1) Körpergewicht, (2) Körpergröße, (3) Politikinteresse. Die unabhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit, instrumentiert mit dem Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Wie Tabelle 7 zeigt, sind alle geschätzten Koeffizienten klein und statistisch insignifikant. Die Standardfehler sind dabei groß, was auf eine geringe Präzision der Schätzung hindeutet. Es ergibt sich kein Hinweis auf einen systematischen Zusammenhang zwischen tatsächlicher Arbeitszeit und diesen irrelevanten Outcomes. Diese Ergebnisse sprechen dafür, dass das gewählte Instrument nicht über andere Kanäle mit unbeobachteten Determinanten der abhängigen Variablen korreliert ist, was ein wichtiges Argument für die Gültigkeit der Exklusionsrestriktion ist.
+
+Zur Prüfung der Exogenitätsannahme gehört auch die Untersuchung, ob das Instrument nicht nur zur Erklärung der Treatment-Variable, sondern auch unbeabsichtigt direkt mit der Outcome-Variable in Zusammenhang steht. Eine Möglichkeit zur indirekten Überprüfung der Exklusionsrestriktion bietet der sogenannte Lead-Outcome-Test. Dabei wird untersucht, ob die instrumentierte erklärende Variable einen Effekt auf zukünftige Werte der Outcome-Variable hat, also auf Outcomes, die zeitlich nach der erklärten Variablen liegen und daher kausal nicht beeinflusst werden können. Ein signifikanter Zusammenhang würde darauf hindeuten, dass das Instrument möglicherweise mit unbeobachteten Trends oder latenten Faktoren korreliert ist, die sowohl die Arbeitszeit als auch spätere Outcomes beeinflussen und somit die Exogenitätsannahme verletzt sein könnte. 
+
+\begin{table}[htbp]
+\centering
+\caption{Lead-Outcome-Test: Einfluss der tatsächlichen Arbeitszeit auf zukünftige Outcomes}
+\label{tab:lead_test}
+\begin{tabularx}{\textwidth}{l *{5}{>{\centering\arraybackslash}X}}
+\toprule
+& \textbf{(1)} & \textbf{(2)} & \textbf{(3)} \\
+\midrule
+Tatsächliche Arbeitszeit & -0.095 & -0.131 & -0.008 \\
+& (0.121) & (0.105) & (0.125) \\
+N & 206,819 & 206,698 & 193,695 \\
+First-Stage-F-Statistik & 8.41 & 8.08 & 6.78  \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variablen sind die Lead-Outcomes: (1) Gesundheit in $t+1$, (2) Lebenszufriedenheit in $t+1$, (3) Freizeitzufriedenheit in $t+1$. Die unabhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit, instrumentiert mit dem Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table} 
+
+Tabelle 8 präsentiert die Ergebnisse dieses Tests für die Outcomes. In allen Spezifikationen wird die tatsächliche Arbeitszeit wie im Basismodell durch das Bartik-Instrument instrumentiert, wobei der jeweilige Outcome als einjähriger Lead-Wert berücksichtigt wird. 
+Die Resultate zeigen ausschließlich insignifikante Effekte für alle zukünftigen Outcomes in Bezug auf die erklärte Arbeitszeit im Vorjahr. Die geschätzten Koeffizienten sind leicht negativ und weisen große Standardfehler auf. Auch die First-Stage-F-Statistiken liegen in allen Fällen unter dem Schwellenwert von 10, was auf eine geringe instrumentelle Relevanz in dieser Spezifikation hinweist. Die fehlenden Effekte unterstützen die Annahme, dass das Bartik-Instrument keine antizipatorischen Komponenten enthält und keine direkten kausalen Zusammenhänge mit nachfolgenden Outcomes aufweist. Damit liefern die Ergebnisse des Lead-Outcome-Tests ein wichtiges indirektes Indiz für die Gültigkeit der Exklusionsrestriktion und untermauern die Plausibilität des gewählten IV-Ansatzes. 
+
+Zusammenfassend liefern Balance-Tests, Placebo-Outcomes und Lead-Outcome-Analysen konsistente Hinweise darauf, dass das Bartik-Instrument weder systematisch mit unbeobachteten Störfaktoren korreliert ist, noch direkte Effekte auf die Zielgrößen ausübt. Damit stützen die Ergebnisse die Plausibilität der Annahmen einer gültigen IV-Schätzung. Im nächsten Schritt wird untersucht, ob die Hauptergebnisse auch unter veränderten Annahmen und in alternativen Spezifikationen Bestand haben.
+
+\subsection{Robustheitstests}
+Das Identifikationsargument des Bartik-Instruments besteht darin, dass sich branchenspezifische Schocks je nach regionaler Branchenstruktur unterschiedlich auswirken. Damit diese Schocks jedoch als exogen gelten können, ist es entscheidend, dass Erwerbstätige nicht systematisch, beispielsweise durch gezielte Branchenwechsel auf solche Entwicklungen reagieren. Wenn Personen mit unbeobachteten Präferenzen oder Lebensumständen in Branchen mit sich verändernden Arbeitszeitmustern ein- oder austreten, könnte die Variation des Instruments mit relevanten Merkmalen korreliert sein, was die Exogenitätsannahme verletzt \parencite{goldsmith2020,borusyak2025}. 
+
+Um dieser potenziellen Endogenität zu begegnen, wird eine Robustheitsanalyse durchgeführt, bei der die Stichprobe auf sogenannte Stayer beschränkt wird. Darunter fallen Personen, die im Beobachtungszeitraum in derselben Branchenkategorie verbleiben. Konkret werden alle Personen ausgeschlossen, die mehr als einmal die Branche wechseln, womit gelegentliche Wechsel innerhalb längerer Beobachtungszeiträume noch toleriert werden. Ziel dieser Eingrenzung ist es, ein Subsample zu erzeugen, in dem branchenspezifische Veränderungen plausibel als exogen betrachtet werden können. Für die identifizierte Stayer-Stichprobe wird das Bartik-Instrument analog zur Hauptanalyse neu konstruiert, basierend auf den selben Basisjahren und Aggregationsebenen. Anschließend werden sowohl die First-Stage- als auch die Second-Stage-Schätzungen erneut durchgeführt, um zu überprüfen, ob die Hauptergebnisse auch unter dieser eingeschränkten, methodisch konservativeren Annahme Bestand haben.
+
+\begin{table}[H]
+\centering
+\caption{First-Stage-Ergebnisse im Vergleich: Gesamtstichprobe und Stayer}
+\label{tab:firststage_comparison}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+ & \textbf{Koeffizient} & \textbf{Standardfehler} & \textbf{F-Statistik} & \textbf{N} \\
+\midrule
+Gesamtstichprobe & -0.563*** & 0.156 & 13.06 & 252{,}702 \\
+Stayerstichprobe & -0.361** & 0.126 & 8.24 & 175,861 \\
+\bottomrule
+\end{tabular}
+}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Abhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit. Die erklärende Variable ist das Bartik-Instrument. Die Schätzung basiert ausschließlich auf der Substichprobe der sogenannten \textit{Stayer}, also Personen, die während des Beobachtungszeitraums nicht die Branche gewechselt haben. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Tabelle 9 vergleicht die First-Stage-Ergebnisse zwischen der Gesamtstichprobe und der auf Stayer beschränkten Substichprobe. In beiden Fällen zeigt das Bartik-Instrument einen negativen und statistisch signifikanten Effekt auf die tatsächliche Arbeitszeit. Der Koeffizient ist bei den Stayern im absoluten leicht kleiner, liegt jedoch in der gleichen Größenordnung. Die F-Statistik, die die instrumentelle Relevanz misst, fällt bei den Stayern mit 8.24 unter den konventionellen Schwellenwert von 10, liegt aber weiterhin in einem Bereich, der als ausreichend gelten kann. In der Gesamtstichprobe beträgt sie 13.06, was eine stärkere Korrelation zwischen Instrument und Treatment bedeutet. Diese Differenz dürfte hauptsächlich auf die kleinere Stichprobe bei den Stayern und deren geringere Variabilität zurückzuführen sein. Das Instrument bleibt also auch unter Stayern informativ, wenn auch etwas schwächer. Die Richtung des Effekts ist stabil, was die Robustheit der First-Stage und damit die Grundlage für kausale Identifikation unterstützt.
+
+\begin{table}[htbp]
+\centering
+\caption{Vergleich der Second-Stages: Gesamtstichprobe vs. Stayer}
+\label{tab:secondstage_compare}
+\begin{tabularx}{\textwidth}{l *{6}{>{\centering\arraybackslash}X}}
+\toprule
+\textbf{Outcome} & \multicolumn{2}{c}{\textbf{Koeffizient}} & \multicolumn{2}{c}{\textbf{F-Statistik}} & \multicolumn{2}{c}{\textbf{N}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+& Gesamt & Stayer & Gesamt & Stayer & Gesamt & Stayer \\
+\midrule
+Gesundheitszustand    & $0.214^+$   & 0.150    & 14.5  & 6.85  & 252,461  & 175,686 \\
+Lebenszufriedenheit   & 0.166 & 0.124 & 14.0  & 6.04  & 250,967  & 174,440 \\
+Freizeitzufriedenheit & –0.026    & –0.216    & 10.4  & 4.77  & 230,152  & 158,571 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Tabelle berichtet IV-Schätzer für die Gesamtstichprobe und für die Substichprobe der Stayer (Personen ohne Branchenwechsel im Beobachtungszeitraum). 
+Dargestellt sind die geschätzten Koeffizienten der tatsächlich geleisteten Wochenarbeitszeit (instrumentiert mit dem Bartik-Instrument) für die drei Outcomes Gesundheit, Lebenszufriedenheit und Freizeitzufriedenheit, jeweils mit der zugehörigen First-Stage-F-Statistik und Beobachtungszahl (N). Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Die Ergebnisse der Second-Stage-Schätzungen in Tabelle 10 vergleichen die Haupteffekte mit denen, die sich in der auf Branchen-Stayer beschränkten Stichprobe ergeben. Es zeigt sich, dass die geschätzten Zusammenhänge zwischen tatsächlicher Arbeitszeit und den drei betrachteten Outcomes auch in der Stayer-Gruppe konsistent mit den Ergebnissen des Gesamtmodells ausfallen. Die Effektgrößen sind jedoch generell geringer, mit einer Ausnahme. Für den Gesundheitszustand verringert sich der geschätzte Effekt von 0{.}214 auf 0{.}150 Punkte. Bei der Lebenszufriedenheit sinkt der Punktkoeffizient ebenfalls leicht von 0{.}166 auf 0{.}124. Beide Effekte bleiben statistisch insignifikant. Umgekehrt zeigt sich bei der Freizeitzufriedenheit ein leicht negativer Effekt von –0.026 in der Gesamtstichprobe, der sich in der Stayer-Stichprobe zu –0{.}216 deutlich verstärkt. Trotz des größeren Absolutwertes bleibt auch dieser Effekt nicht signifikant, was angesichts der reduzierten First-Stage-F-Statistik erwartbar ist. Die F-Statistiken liegen bei den Stayern mit Werten zwischen 4.77 und 6.85 durchweg unter 10, was auf eine eingeschränkte instrumentelle Relevanz in dieser Teilstichprobe hinweist.  Wie bereits diskutiert, dürfte dies auf die kleinere Fallzahl und die geringere Variabilität innerhalb der Stayer-Gruppe zurückzuführen sein. Insgesamt stützen die Ergebnisse die Robustheit der Haupteffekte im Hinblick auf deren Richtung und Größenordnung. Gleichzeitig zeigen sie jedoch, dass in stärker selektierten Subgruppen wie den Branchen-Stayern die instrumentelle Stärke und damit auch die Trennschärfe für kausale Aussagen begrenzt ist.
+
+Ein zentrales Element bei der Konstruktion des Bartik-Instruments ist die Festlegung des Basisjahres beziehungsweise Basiszeitraums, über den die regionale Branchenstruktur, also die sogenannte „Share“-Komponente, bestimmt wird. In der Hauptspezifikation dieser Arbeit wird dafür ein gleitender Durchschnitt über die Jahre 1991 bis 1993 verwendet. Diese Wahl ist theoretisch wie datenpraktisch begründet. Das Jahr 1991 markiert den Beginn der einheitlichen Erhebung des SOEP nach der Wiedervereinigung, sodass die bundesweite Abdeckung einschließlich der neuen Bundesländer gewährleistet ist. Zugleich sind die Jahre unmittelbar nach der Wende durch besondere strukturelle Anpassungen und wirtschaftliche Umbrüche geprägt, insbesondere in Ostdeutschland. Um solche wendespezifischen Sondereffekte in einzelnen Jahren zu glätten und die Stabilität der regionalen Branchenstruktur besser zu erfassen, erscheint eine Mittelung über mehrere Jahre sinnvoll. Um die Robustheit der Ergebnisse gegenüber der Wahl des Basiszeitraums zu überprüfen, wird das Bartik-Instrument im Folgenden auf Grundlage alternativer Definitionen konstruiert. Hierfür wird jeweils nur ein einzelnes Jahr als Basis benutzt (1991, 1992 und 1993). Dadurch lässt sich überprüfen, ob die Ergebnisse der Hauptanalyse maßgeblich von der spezifischen Basisspezifikation beeinflusst sind oder ob sie sich auch unter alternativen Konstruktionen des Instruments bestätigen.
+
+\begin{table}[H]
+\centering
+\caption{Robustheit gegenüber der Wahl des Basisjahres: Effekt auf Gesundheitszustand}
+\label{tab:basisjahre_lifesat}
+\begin{tabularx}{\textwidth}{l *{4}{>{\centering\arraybackslash}X}}
+\toprule
+\textbf{Basisjahr(e)} & \textbf{Koeffizient} & \textbf{Standardfehler} & \textbf{F-Statistik} & \textbf{N} \\
+\midrule
+1991 & 0.259+ & 0.152 & 11.1 & 258,050 \\
+1992 & 0.212+ & 0.124 & 14.3 & 252,461 \\
+1993 & 0.217 & 0.146 & 13.7 & 252,461 \\
+1991--1993 & 0.214+ & 0.129 & 14.5 & 252,461 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Hinweis:} Tabelle berichtet die Ergebnisse der zweiten Stufe der IV-Schätzung unter Variation des Basisjahres für die Berechnung des Bartik-Instruments (1991, 1992, 1993). Abhängige Variable ist der selbst eingeschätzte Gesundheitszustand. Die unabhängige Variable ist die tatsächlich geleistete Wochenarbeitszeit, instrumentiert mit dem Bartik-Instrument. Alle Modelle enthalten Personen- und Jahres-Fixed Effects. Standardfehler in Klammern, geclustert auf Bundesland–Jahr-Ebene. Signifikanzniveaus: $^{+}p<0.1$, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Datenbasis: Sozio-oekonomisches Panel (SOEP v39, 1994--2022), eigene Berechnungen.
+\end{tablenotes}
+\end{table}
+
+Tabelle 11 zeigt, dass die IV-Schätzungen für den Gesundheitszustand weitgehend robust gegenüber der Wahl des Basisjahres ausfallen. Die geschätzten Koeffizienten liegen zwischen 0{.}212 und 0{.}259, wobei die positiven Effekte in fast allen Spezifikationen das 10\%-Signifikanzniveau erreichen. Die zugehörigen Standardfehler unterscheiden sich nur moderat, was auf eine insgesamt stabile Schätzpräzision hindeutet. Sowohl bei einzelnen Basisjahren als auch beim Durchschnitt über 1991–1993 zeigt sich ein konsistenter positiver Zusammenhang zwischen tatsächlicher Arbeitszeit und selbst eingeschätztem Gesundheitszustand. Auch die First-Stage-F-Statistiken liegen in allen Spezifikationen oberhalb des Schwellenwerts von 10 und belegen damit die hinreichende Relevanz des Bartik-Instruments über alle Varianten hinweg. Die leicht variierenden Fallzahlen erklären sich aus der jeweiligen Konstruktion des Instruments. Je nach Basisjahr stehen unterschiedliche Beobachtungen für die Generierung der Shift-Komponente zur Verfügung. Für 1992, 1993 und den Durchschnitt ist die Fallzahl identisch. Dies erklärt sich durch die eingeschränkte Datenverfügbarkeit des Gesundheitsoutcomes im Jahr 1993. Insgesamt belegen die Ergebnisse, dass die zentralen Befunde der Arbeit, hier am Beispiel des Gesundheitszustands, nicht sensibel auf die konkrete Wahl des Basisjahres reagieren. Die Verwendung eines gleitenden Durchschnitts über mehrere Jahre erscheint daher als methodisch robuste und ökonomisch plausible Spezifikation, da sie historische Schwankungen glättet und zugleich ausreichend identifizierende Variation erhält.
+
+
+% =========================================================
+% Diskussion
+% =========================================================
+
+\section{Diskussion}
+Die Ergebnisse dieser Arbeit zeichnen ein differenziertes Bild des Zusammenhangs zwischen Arbeitszeit und Gesundheit und Wohlbefinden. Während die OLS-Schätzungen auf durchweg negative Zusammenhänge hindeuten, zeigen die IV-Schätzungen ein anderes Muster. Insbesondere deuten die IV-Schätzungen in der Gesamtstichprobe auf positive Effekte längerer Arbeitszeiten auf die selbst eingeschätzte Gesundheit hin, die statistisch signifikant ausfallen. Für die anderen Outcomes, also die der Lebenszufriedenheit und Zufriedenheit mit der Freizeit lassen sich hingegen keine signifikanten Effekte nachweisen.
+
+Die Befunde dieser Arbeit stehen im Spannungsverhältnis zur bestehenden Literatur. Zahlreiche theoretische Überlegungen und empirische Studien argumentieren, dass längere Arbeitszeiten das Wohlbefinden über Belastung, Stress oder eine Einschränkung der Freizeit negativ beeinflussen \parencite{cyganrehm2018, berniell2020}. Auch die OLS-Schätzungen in dieser Arbeit liefern ein Bild, das diese Sichtweise bestätigt. Die IV-Ergebnisse weichen hiervon jedoch ab. In der Gesamtstichprobe zeigen sie positive Effekte auf die selbst eingeschätzte Gesundheit. Eine mögliche Erklärung für diesen scheinbaren Widerspruch liegt in der Identifikationsstrategie. Da die IV-Schätzung den Local Average Treatment Effect (LATE) identifiziert, beziehen sich die Ergebnisse nur auf jene Gruppe von Beschäftigten, deren Arbeitszeit durch branchenspezifische Schocks beeinflusst wird. Es ist plausibel, dass diese Complier systematisch von der Gesamtbevölkerung abweichen, beispielsweise in Bezug auf Arbeitsumfeld, Stabilität der Beschäftigung oder Gesundheit. Positive Effekte könnten dadurch entstehen, dass längere Arbeitszeiten in diesem Kontext als Signal für Arbeitsplatzsicherheit, höhere Einkommen oder stärkere soziale Integration wirken, die wiederum mit einem besseren Gesundheitszustand einhergehen. Darüber hinaus könnte auch der institutionelle Rahmen des deutschen Arbeitsmarktes eine Rolle spielen. Tarifliche Regelungen, gesetzliche Schutzmechanismen sowie die Möglichkeit, Arbeitszeit flexibel zu gestalten, könnten dazu beitragen, dass Mehrarbeit nicht zwangsläufig gesundheitsschädlich wirkt, sondern in bestimmten Konstellationen sogar als vorteilhaft wahrgenommen wird. 
+
+Die Subgruppenanalysen verdeutlichen, dass sich die positiven Gesundheitseffekte nicht in allen Teilen der Erwerbsbevölkerung reproduzieren lassen. Für die Gesamtstichprobe zeigt sich ein positiver Effekt auf den selbst eingeschätzten Gesundheitszustand, der in den Subgruppen jedoch nicht robust nachweisbar ist. Auffällig ist hingegen, dass sich bei Beschäftigten mit einem Einkommen über dem Median ein signifikant positiver Effekt auf die Lebenszufriedenheit ergibt. Damit liefert die Analyse an dieser Stelle kausale Evidenz für ein Muster, das auch \textcite{holly2012} in korrelativen OLS-Schätzungen dokumentieren: längere Arbeitszeiten können bei Besserverdienenden mit höherer allgemeiner Lebenszufriedenheit verbunden sein. Insgesamt deuten die Ergebnisse darauf hin, dass längere Arbeitszeiten nicht einheitlich wirken, sondern je nach Wohlbefindensdimension und sozioökonomischem Kontext unterschiedliche Konsequenzen haben.
+
+Zur Prüfung der Validität der Identifikationsstrategie wurden verschiedene Robustheitsanalysen durchgeführt. Placebo- und Lead-Outcome-Tests zeigen, dass die Ergebnisse nicht durch systematische Vorlaufeffekte getrieben werden. Ebenso deuten Balance-Tests darauf hin, dass zentrale Kovariaten zwischen den durch das Instrument definierten Gruppen hinreichend vergleichbar sind. Damit sprechen die Befunde insgesamt für die Plausibilität der Exogenitätsannahme. 
+
+Gleichwohl bestehen methodische Einschränkungen. Erstens identifizieren die Instrumentenvariablenschätzungen nur den Local Average Treatment Effect (LATE). Die Befunde gelten somit ausschließlich für jene Gruppe von Beschäftigten, deren Arbeitszeit durch branchenspezifische Schocks beeinflusst wird und lassen sich nicht ohne Weiteres auf die gesamte Erwerbsbevölkerung übertragen. Zweitens basiert die Analyse auf selbstberichteten Angaben zu Arbeitszeit und Wohlbefinden, die potenziell Messfehlern unterliegen können. Drittens ist die instrumentelle Relevanz mit F-Statistiken teils unter 10 in einzelnen Subgruppen wie Frauen, Teilzeitbeschäftigten oder in der Stayer-Analyse, eingeschränkt, was die Präzision reduziert und vorsichtige Interpretation erfordert.
+
+Die Ergebnisse liefern wichtige Impulse für die arbeitsmarktpolitische Debatte. Sie zeigen, dass die Wirkungen von Arbeitszeit nicht einheitlich sind, sondern je nach Dimension des Wohlbefindens und sozioökonomischem Kontext unterschiedlich ausfallen. Arbeitszeitregelungen sollten daher nicht auf der pauschalen Annahme basieren, dass längere Arbeitszeiten das Wohlbefinden generell verringern. Eher sprechen die Ergebnisse dafür, dass differenzierte Ansätze, welche die unterschiedlichen Gruppen und Lebenslagen berücksichtigen, notwendig sind. 
+
+Darüber hinaus weist die Arbeit auf offene Fragen hin, die in künftiger Forschung adressiert werden sollten. Insbesondere ist es wichtig, die Mechanismen hinter den positiven Gesundheitseffekten näher zu beleuchten und die Rolle langfristiger Entwicklungen zu untersuchen. Eine solche Vertiefung könnte dazu beitragen, die Heterogenität der Ergebnisse besser zu verstehen und die Gestaltung von Arbeitszeitpolitik zielgerichteter zu unterstützen.
+
+
+% =========================================================
+% Fazit
+% =========================================================
+
+\section{Fazit}
+In dieser Arbeit wurde der kausale Einfluss der tatsächlich geleisteten Arbeitszeit auf das individuelle Wohlbefinden untersucht. Grundlage waren Daten des Sozio-oekonomischen Panels für den Zeitraum 1994--2022. Um mögliche Endogenität zu adressieren, wurde ein Instrumentenvariablenansatz mit einem Bartik-Instrument verwendet, das auf plausibel exogener Variation der vertraglichen Arbeitszeit durch branchenspezifische Schocks beruht. Dadurch konnte der Local Average Treatment Effect (LATE) für jene Beschäftigten identifiziert werden, deren Arbeitszeit durch diese Schocks beeinflusst wird.  
+
+Anders als es viele Theorien und ein Großteil der bisherigen Literatur erwarten lassen, zeigen die Ergebnisse, dass längere Arbeitszeiten das Wohlbefinden nicht zwangsläufig mindern. Während OLS-Schätzungen negative Zusammenhänge zeigen, weisen die IV-Ergebnisse auf positive Effekte für die selbst eingeschätzte Gesundheit hin. Für andere Dimensionen wie Lebenszufriedenheit und Freizeitzufriedenheit finden sich schwächere oder nicht signifikante Effekte. Für Erwerbstätige mit überdurchschnittlichem Einkommen lässt sich ein positiver Effekt von Arbeitszeit auf die Lebenszufriedenheit beobachten. Robustheitsanalysen wie Placebo- und Lead-Outcomes sowie Balance-Tests bestätigen die Glaubwürdigkeit der Identifikationsstrategie.  
+
+Insgesamt machen die Ergebnisse deutlich, dass der Zusammenhang zwischen Arbeitszeit und Wohlbefinden komplexer ist, als oft angenommen. Anstelle eines einfachen Zielkonflikts weisen die Ergebnisse auf Heterogenität hin. Für bestimmte Gruppen können längere Arbeitszeiten sogar mit einer Verbesserung der Gesundheit und Stabilität einhergehen, während für andere potenzielle Belastungen bestehen bleiben. Dies wirft neue Fragen nach den Mechanismen auf, über die Arbeitszeit verschiedene Dimensionen des Wohlbefindens beeinflusst, sowie nach der Bedeutung institutioneller Rahmenbedingungen.
+
+Die Analyse macht deutlich, dass arbeitsmarktpolitische Diskussionen über Arbeitszeitregelungen nicht von einer einheitlichen Lösung ausgehen sollten. Entscheidend ist vielmehr, zu verstehen, wie unterschiedliche Beschäftigtengruppen von Arbeitszeitmodellen betroffen sind. Für die Forschung ergibt sich daraus die Aufgabe, die Mechanismen möglicher Gesundheitseffekte genauer zu beleuchten und zu prüfen, ob ähnliche Muster auch in anderen Kontexten und über längere Zeiträume bestehen.
+
+
+% =========================================================
+% Literaturverzeichnis
+% =========================================================
+
+\newpage
+\printbibliography
+
+
+% =========================================================
+% Anhang
+% =========================================================
+
+\clearpage
+\section*{Anhang}
+\addcontentsline{toc}{section}{Anhang}
+\appendix
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\input{appendix}
+
+
+% =========================================================
+% Erklärung zur Urheberschaft
+% =========================================================
+
+\clearpage 
+\noindent \textbf{Erklärung zur Urheberschaft}\\ [0.5cm]
+Hiermit erkläre ich, Paul Ernst, dass ich die vorliegende Arbeit noch
+nicht für andere Prüfungen eingereicht habe. Ich habe die Arbeit selbständig verfasst. Sämtliche Quellen einschließlich Internetquellen, die ich unverändert oder
+abgewandelt wiedergegeben habe, insbesondere Quellen für Texte, Grafiken, Tabellen und Bilder, habe ich als solche kenntlich gemacht.
+Ich bin mir darüber bewusst, dass bei Verstößen gegen diese Grundsätze ein Verfahren wegen Täuschungsversuchs bzw. Täuschung eingeleitet wird. \\[4cm]
+\rule{6cm}{0.4pt} \\[0.6cm]
+Paul Ernst \\ [0.3cm]
+Berlin, 25.08.2025
+\end{document}
